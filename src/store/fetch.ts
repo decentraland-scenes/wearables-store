@@ -17,7 +17,7 @@ export const allCollections = async () => {
     });
 };
 
-export const storeCollections = async (storeAddress: string = "0x56d5cd2a5f299854c2ab3ee4c3126f285140bb9b") => {
+export const storeCollections = async (storeAddress: string = "0x934477ec39ce757e95f5c7dd24562c1d5f5d1cc6") => {
   const result = await fetchGraph({
     operationName: "Wearables",
     variables: {
