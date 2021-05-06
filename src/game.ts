@@ -5,6 +5,26 @@ import { getContract, ContractName } from "decentraland-transactions";
 import { createMANAComponent } from "./store/components/mana";
 import { createComponents, buy } from "./store/index";
 import * as f from "./store/fetch";
+import { createWearablesHorizontalMenu, updateWearablesMenu } from "./ui/menuMainFunctions";
+import { fixImageUrl } from "./ui/helperFunctions";
+
+const center = new Vector3(8,0,8)
+// Horizontal MENUS
+let rotation = Quaternion.Euler(0,0,0)
+let posVec = center.add(Vector3.Forward().rotate(rotation).multiplyByFloats(0,0,0))
+
+// -- wearables menu
+let wearablesMenu = createWearablesHorizontalMenu({
+    position: posVec,
+    rotation: rotation,
+    scale: new Vector3(1,1,1)
+    },
+    2    
+  )
+updateWearablesMenu(wearablesMenu, 10, true)
+//fillEventsMenu(eventsMenu)    
+
+
 
 function spawnCube(x: number, y: number, z: number, collection: any, item: any) {
   const cube = new Entity();
@@ -59,26 +79,30 @@ function spawnCube(x: number, y: number, z: number, collection: any, item: any) 
 
 
 
-executeTask(async () => {
-  const { mana, store } = await createComponents();
-  const storeContract = getContract(ContractName.CollectionStore, 80001);
+// executeTask(async () => {
+//   const { mana, store } = await createComponents();
+//   const storeContract = getContract(ContractName.CollectionStore, 80001);
+  
+//   //log("MANA: " + eth.fromWei(await mana.balance(), "ether"))
 
-  await mana.approve(storeContract.address, 1).catch(() => {});
+//   //const isApproved = await mana.isApproved(storeContract.address)
 
-  const { collections } = await f.storeCollections();
-  const fromAddress = await getUserAccount();
+//   //if(isApproved <  +eth.toWei(500, "ether")){
+//   //await mana.approve(storeContract.address, 1).catch(() => {});
 
-  log(collections);
-  let cubePosition = -1;
-  for (const collection of collections) {
-    for (const item of collection.items) {
-      if (+item.available > 0) {
-        spawnCube((cubePosition += 2.5), 1.7, 14, collection, item);
-      }
-    }
-  }
-});
+//   //}
+  
+//   const { collections } = await f.storeCollections();
+//   const fromAddress = await getUserAccount();
 
-function fixImageUrl(imageUrl: string) {
-  return "https://peer.decentraland.zone/lambdas" + imageUrl.split("/lambdas")[1];
-}
+//   log(collections);
+//   let cubePosition = -1;
+//   for (const collection of collections) {    
+//     for (const item of collection.items) {
+//       if (+item.available > 0) {
+//         spawnCube((cubePosition += 2.5), 1.7, 14, collection, item);
+//       }
+//     }
+//   }
+// });
+

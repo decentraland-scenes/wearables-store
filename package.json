@@ -11,12 +11,12 @@
     "ecs:install-next": "npm install --save-dev decentraland-ecs@next"
   },
   "devDependencies": {
-    "decentraland-ecs": "^6.6.5-20210422175528.commit-bdbe69f"
+    "decentraland-ecs": "^6.6.5-20210503212808.commit-914efe1"
   },
   "dependencies": {
-    "@dcl/ecs-scene-utils": "^1.6.1",
-    "@dcl/ui-scene-utils": "^1.8.0",
-    "decentraland-transactions": "^1.5.3",
+    "@dcl/ecs-scene-utils": "^1.7.0",
+    "@dcl/ui-scene-utils": "^1.8.1",
+    "decentraland-transactions": "^1.6.1",
     "eth-connect": "^6.0.0"
   },
   "bundleDependencies": [
@@ -25,7 +25,7 @@
     "@dcl/ui-scene-utils",
     "@dcl/ecs-scene-utils"
   ],
-  "prettier":{
+  "prettier": {
     "printWidth": 120
   }
 }

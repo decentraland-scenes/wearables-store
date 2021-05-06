@@ -5,16 +5,20 @@
     "strict": true,
     "paths": {
       "decentraland-transactions": [
-        "node_modules/decentraland-transactions/decentraland-transactions.d.ts"
+        "node_modules/decentraland-transactions/decentraland-transactions.d.ts",
+        "node_modules\\decentraland-transactions\\decentraland-transactions.d.ts"
       ],
       "eth-connect": [
-        "node_modules/eth-connect/eth-connect.d.ts"
+        "node_modules/eth-connect/eth-connect.d.ts",
+        "node_modules\\eth-connect\\eth-connect.d.ts"
       ],
       "@dcl/ui-scene-utils": [
-        "node_modules/@dcl/ui-scene-utils/dist/index.d.ts"
+        "node_modules/@dcl/ui-scene-utils/dist/index.d.ts",
+        "node_modules\\@dcl\\ui-scene-utils\\dist\\index.d.ts"
       ],
       "@dcl/ecs-scene-utils": [
-        "node_modules/@dcl/ecs-scene-utils/dist/index.d.ts"
+        "node_modules/@dcl/ecs-scene-utils/dist/index.d.ts",
+        "node_modules\\@dcl\\ecs-scene-utils\\dist\\index.d.ts"
       ]
     },
     "baseUrl": "."
