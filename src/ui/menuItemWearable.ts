@@ -3,6 +3,7 @@ import { cleanString, monthToString, wordWrap, fixImageUrl, ethClean } from "./h
 import { AnimatedItem } from "./simpleAnimator"
 import * as resource from "./resources/resources"
 import { MenuItem } from "./menuItem"
+import { createComponents, buy } from "../store/index";
 import * as sfx from "./resources/sounds"
 import { lobbyCenter } from "./resources/globals"
 
@@ -169,7 +170,7 @@ export class WearableMenuItem extends MenuItem {
             position: new Vector3(this.cardOffset.x, this.cardOffset.y-0.2, this.cardOffset.z),            
             scale: new Vector3(0.4, 0.4, 0.4)
         }))
-        this.buyButton.addComponent(resource.jumpInButtonShape)
+        this.buyButton.addComponent(resource.buyButtonShape)
         this.buyButton.setParent(this.detailsRoot)
         this.buyButton.addComponent(new AnimatedItem(
             {
@@ -177,7 +178,7 @@ export class WearableMenuItem extends MenuItem {
                 scale: new Vector3(0.1, 0.1, 0.1)
             },
             {   
-                position: new Vector3(this.cardOffset.x+0.25, this.cardOffset.y-0.25, this.cardOffset.z-0.05),                
+                position: new Vector3(this.cardOffset.x+0.65, this.cardOffset.y-0.0, this.cardOffset.z-0.05),                
                 scale: new Vector3(0.35, 0.35, 0.35)
             },
             1.8
@@ -193,7 +194,7 @@ export class WearableMenuItem extends MenuItem {
 
         this.buyButtonTextRoot.addComponent(this.buyButtonText)
         this.buyButtonTextRoot.addComponent(new Transform({
-            position: new Vector3(0, -0.33, -0.05),
+            position: new Vector3(0, 0.0, -0.05),
             scale: new Vector3(0.22, 0.22, 0.22)
         }))
         
@@ -203,7 +204,7 @@ export class WearableMenuItem extends MenuItem {
         this.buyButtonText.value = "BUY"
         this.buyButton.addComponent(new OnPointerDown( 
             async function () {
-                
+                    buy(_collection.id, _item.blockchainId, _item.price);
                 },
                 {
                 button: ActionButton.POINTER,
@@ -251,8 +252,8 @@ export class WearableMenuItem extends MenuItem {
         //update buy button
         this.buyButtonText.value = "BUY"
         this.buyButton.getComponent(OnPointerDown).callback =  
-            async function () {
-               // ADD BUY FUNCTION
+            async function () {                
+               buy(_collection.id, _item.blockchainId, _item.price);
                 }
         this.buyButton.getComponent(OnPointerDown).hoverText = "BUY"
         this.buyButton.getComponent(OnPointerDown).button = ActionButton.POINTER

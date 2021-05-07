@@ -401,9 +401,10 @@ export class HorizontalScrollMenu extends Entity {
     }
     showItem(_id:number){
         if(_id < this.itemRoots.length && _id >= 0){
-            engine.addEntity(this.itemRoots[_id])
+            
             this.itemRoots[_id].setParent(this.scrollerRootA)
             this.items[_id].setParent(this.itemRoots[_id])
+            engine.addEntity(this.itemRoots[_id])
            // this.items[_id].getComponent(Transform).scale.setAll(0)
            // this.items[_id].getComponent(Transform).position.z  = 2
         }
