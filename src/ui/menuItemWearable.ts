@@ -33,6 +33,8 @@ export class WearableMenuItem extends MenuItem {
     buyButton:Entity
     buyButtonText:TextShape
     buyButtonTextRoot:Entity
+    availableCounter:Entity
+    availableText:TextShape
     
     highlightRays:Entity
     highlightFrame:Entity
@@ -79,13 +81,15 @@ export class WearableMenuItem extends MenuItem {
         this.itemCard.addComponent(resource.cardBGShape)
         this.itemCard.setParent(this)
 
+        
         this.thumbNail = new ThumbnailPlane(
             new Texture(fixImageUrl(_item.image)), 
             {
-                position:new Vector3(0,0,0),
+                position:new Vector3(0,0.04,0),
                 scale: new Vector3(1,1,1)
             } ,
-            _alphaTexture)               
+            _alphaTexture)   
+                   
         this.thumbNail.setParent(this.itemCard)         
 
         this.leftDetailsRoot = new Entity()
@@ -164,6 +168,22 @@ export class WearableMenuItem extends MenuItem {
         this.rarityTextRoot.setParent(this.itemCard)
         
 
+        //AVAILABLE COUNT
+        
+        this.availableCounter = new Entity()
+        this.availableCounter.addComponent(new Transform({
+            position: new Vector3(0,-0.85,0)
+        }))
+
+        this.availableText = new TextShape()
+        this.availableText.value = (_item.available + "/" + _item.maxSupply)
+        this.availableText.color = Color3.Black()        
+        this.availableText.fontSize = detailFontSize
+        this.availableText.font = new Font(Fonts.SanFrancisco_Heavy)
+
+        this.availableCounter.addComponent( this.availableText)
+        this.availableCounter.setParent(this.itemCard)
+
         // -- BUY BUTTON
         this.buyButton = new Entity()
         this.buyButton.addComponent(new Transform({
@@ -178,7 +198,7 @@ export class WearableMenuItem extends MenuItem {
                 scale: new Vector3(0.1, 0.1, 0.1)
             },
             {   
-                position: new Vector3(this.cardOffset.x+0.65, this.cardOffset.y-0.0, this.cardOffset.z-0.05),                
+                position: new Vector3(this.cardOffset.x+0.55, this.cardOffset.y-0.25, this.cardOffset.z-0.05),                
                 scale: new Vector3(0.35, 0.35, 0.35)
             },
             1.8
@@ -241,13 +261,17 @@ export class WearableMenuItem extends MenuItem {
     updateItemInfo(_collection:any, _item:any){
         
         //image
+        
         this.thumbNail.updateImage(new Texture(fixImageUrl(_item.image)))          
-
+        
         //price
         this.priceTextShape.value = ethClean(_item.price) + " MANA"
         
         //rarity
         this.rarityTextShape.value = _item.rarity
+
+        //available
+        this.availableText.value = (_item.available + "/" + _item.maxSupply)
 
         //update buy button
         this.buyButtonText.value = "BUY"

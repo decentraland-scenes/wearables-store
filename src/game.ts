@@ -5,24 +5,41 @@ import { getContract, ContractName } from "decentraland-transactions";
 import { createMANAComponent } from "./store/components/mana";
 import { createComponents, buy } from "./store/index";
 import * as f from "./store/fetch";
-import { createWearablesHorizontalMenu, updateWearablesMenu } from "./ui/menuMainFunctions";
+import { createCollectionsVerticalMenu, createWearablesHorizontalMenu, updateCollectionsMenu, updateWearablesMenu } from "./ui/menuMainFunctions";
 import { fixImageUrl } from "./ui/helperFunctions";
+import { collectionPlaceholder } from "./ui/menuPlaceholders";
 
 const center = new Vector3(8,0,8)
+const collectionMenuOffset = new Vector3(-1.6, 2.05, -0.5)
 // Horizontal MENUS
-let rotation = Quaternion.Euler(0,0,0)
+let rotation = Quaternion.Euler(0,45,0)
 let posVec = center.add(Vector3.Forward().rotate(rotation).multiplyByFloats(0,0,0))
 
 // -- wearables menu
 let wearablesMenu = createWearablesHorizontalMenu({
-    position: posVec,
-    rotation: rotation,
-    scale: new Vector3(1,1,1)
-    },
-    2    
-  )
-updateWearablesMenu(wearablesMenu, 10, true)
-//fillEventsMenu(eventsMenu)    
+  position: posVec,
+  rotation: rotation,
+  scale: new Vector3(1,1,1)
+  },
+  2    
+)
+
+// -- Collections Menu
+let collectionsMenu = createCollectionsVerticalMenu({
+  //position: new Vector3(posVec.x -1.6, posVec.y +2.2, posVec.z-0.6),
+  position: new Vector3(collectionMenuOffset.x, collectionMenuOffset.y, collectionMenuOffset.z),
+  scale: new Vector3(1,1,1)
+  },
+  wearablesMenu,
+  7 
+)
+updateCollectionsMenu(collectionsMenu, wearablesMenu, 10, true)
+
+
+//updateWearablesMenu(wearablesMenu, 10, true)
+
+
+ 
 
 
 

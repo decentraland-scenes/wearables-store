@@ -6,6 +6,7 @@ import { createComponents, buy } from "../store/index";
 import * as f from "../store/fetch";
 
 import { WearableMenuItem } from "./menuItemWearable"
+import { CollectionMenuItem } from "./menuItemCollection"
 import { HorizontalScrollMenu } from "./horizontalScrollMenu"
 
 
@@ -15,10 +16,11 @@ import { wearableItemPlaceholder, collectionPlaceholder } from "./menuPlaceholde
 import { AnimatedItem } from './simpleAnimator'
 import { loadMoreMenuItem } from './menuItemLoad'
 import { CooldownActivated } from './cooldown'
+import { VerticalScrollMenu } from "./verticalScrollMenu";
 
 
 
-// EVENTS MENU 
+// WEARABLES MENU IN WARDROBE 
 export function createWearablesHorizontalMenu (_transform: TranformConstructorArgs, _visibleItems:number ):HorizontalScrollMenu {
 
   let menuRoot = new Entity()
@@ -52,74 +54,154 @@ export function createWearablesHorizontalMenu (_transform: TranformConstructorAr
     ))
   }
 
-  let refreshRoot = new Entity()
-  refreshRoot.addComponent(new Transform({
-    position: new Vector3(2.35,-1.15,-0.65),
-    rotation: Quaternion.Euler(27,0,0),
-    scale: new Vector3(0.35, 0.35, 0.35)
-  }))
-  refreshRoot.addComponent(sfx.menuErrorSource)
-  refreshRoot.setParent(wearablesMenu)
-
-  let refreshButton = new Entity()
-  refreshButton.addComponent(new Transform({
-    position: new Vector3(0,0,-0.1),
-    
-  }))
-
-  refreshButton.addComponent(new AnimatedItem(
-    {
-      position: new Vector3(0,0,-0.1),
-      scale: new Vector3(1,1,1)
-    },
-    {
-      position: new Vector3(0,0,0.0),
-      scale: new Vector3(1,1,1)
-    },
-    2
-  ))
-
-  refreshButton.addComponent(new CooldownActivated(
-    20,
-    "REFRESH",
-    "WAIT FOR COOLDOWN"
-    ))
-  refreshButton.addComponent(sfx.refreshSource)
-
-  let cooldownText = new TextShape()
-  cooldownText.value = "20"
-  cooldownText.fontSize = 4
-
-  refreshButton.addComponent(cooldownText)
-
-  refreshButton.addComponent(resource.refreshShape)
-  refreshButton.addComponent(
-    new OnPointerDown(
-      async function () {
-        if(refreshButton.getComponent(CooldownActivated).active){
-          refreshButton.getComponent(Transform).position.z = 0
-          updateWearablesMenu(wearablesMenu, 30, false)
-          refreshButton.getComponent(CooldownActivated).startCooldown()
-          sfx.refreshSource.playOnce()
-        } 
-        else{
-          sfx.menuErrorSource.playOnce()
-        }
-        
-      },
-      {
-        button: ActionButton.POINTER,
-        hoverText: "Refresh"
-      }
-    )
-  )
- 
-  refreshButton.setParent(refreshRoot) 
-
+  wearablesMenu.halveSizeAllExcept(0)
+  
   return wearablesMenu
 }
 
-export async function updateWearablesMenu(_menu:HorizontalScrollMenu, _count:number, _addLoadMoreButton:boolean){
+
+export function updateWearablesMenu(_menu:HorizontalScrollMenu, _collection:any){
+
+    
+    for (let i= 0; i < _collection.items.length; i++) {
+      
+      // only show wearables wich have purchasable copies left
+      if (_collection.items[i].available > 0) {
+         
+        // while there are still existing cards left in the menu (from previous collection) update those
+        if(i < _menu.items.length){
+          log("updateing card " + i + " : " + _collection.items[i].metadata.wearable.name)
+          _menu.items[i].updateItemInfo(_collection, _collection.items[i])
+        }
+        //otherwise add new cards to the menu
+        else{
+          log("adding: " + _collection.items[i].metadata.wearable.name) 
+          _menu.addMenuItem(new WearableMenuItem({    
+              scale: new Vector3(1,1,1)
+            },        
+            resource.roundedSquareAlpha,
+            _collection,
+            _collection.items[i]
+          ))
+        }    
+               
+      }
+    }
+  
+
+  if(_collection.items.length < _menu.items.length){
+    removeLastXItems(_menu, _menu.items.length - _collection.items.length)
+  } 
+
+  _menu.resetScroll()
+  _menu.halveSizeAllExcept(0)
+}
+
+// COLLECTIONS MENU 
+export function createCollectionsVerticalMenu (_transform: TranformConstructorArgs, _wearableMenuRef:HorizontalScrollMenu, _visibleItems:number ):VerticalScrollMenu {
+
+  
+  let menuRoot = new Entity()
+  let collectionsMenu = new VerticalScrollMenu({
+    position: new Vector3(0, 0, 0 ),
+    scale: new Vector3(1,1,1)
+  },
+  0.19,
+  _visibleItems,
+  resource.menuTopEventsShape,
+  resource.wardrobeShape,
+  "Events"
+  )  
+  menuRoot.addComponent(new Transform({
+    position: _transform.position,
+    rotation: _transform.rotation,
+    scale: _transform.scale
+  }))    
+  collectionsMenu.setParent(menuRoot)
+  menuRoot.setParent(_wearableMenuRef)
+  engine.addEntity(menuRoot)
+  
+  //placeholder menuItems
+ // for (let i = 0; i < vertEventMenu.visibleItemCount; i++){
+  for (let i = 0; i < 20; i++){
+    collectionsMenu.addMenuItem(new CollectionMenuItem({    
+        scale: new Vector3(1,1,1)
+      },        
+      resource.roundedSquareAlpha,
+      collectionPlaceholder,  
+      _wearableMenuRef    
+    ))
+  }
+
+  // let refreshRoot = new Entity()
+  // refreshRoot.addComponent(new Transform({
+  //   position: new Vector3(2.35,-1.15,-0.65),
+  //   rotation: Quaternion.Euler(27,0,0),
+  //   scale: new Vector3(0.35, 0.35, 0.35)
+  // }))
+  // refreshRoot.addComponent(sfx.menuErrorSource)
+  // refreshRoot.setParent(collectionsMenu)
+
+  // let refreshButton = new Entity()
+  // refreshButton.addComponent(new Transform({
+  //   position: new Vector3(0,0,-0.1),
+    
+  // }))
+
+  // refreshButton.addComponent(new AnimatedItem(
+  //   {
+  //     position: new Vector3(0,0,-0.1),
+  //     scale: new Vector3(1,1,1)
+  //   },
+  //   {
+  //     position: new Vector3(0,0,0.0),
+  //     scale: new Vector3(1,1,1)
+  //   },
+  //   2
+  // ))
+
+  // refreshButton.addComponent(new CooldownActivated(
+  //   20,
+  //   "REFRESH",
+  //   "WAIT FOR COOLDOWN"
+  //   ))
+  // refreshButton.addComponent(sfx.refreshSource)
+
+  // let cooldownText = new TextShape()
+  // cooldownText.value = "20"
+  // cooldownText.fontSize = 4
+
+  // refreshButton.addComponent(cooldownText)
+
+  // refreshButton.addComponent(resource.refreshShape)
+  // refreshButton.addComponent(
+  //   new OnPointerDown(
+  //     async function () {
+  //       if(refreshButton.getComponent(CooldownActivated).active){
+  //         refreshButton.getComponent(Transform).position.z = 0
+  //         //updateCollectionsMenu(collectionsMenu, 30, false)
+  //         refreshButton.getComponent(CooldownActivated).startCooldown()
+  //         sfx.refreshSource.playOnce()
+  //       } 
+  //       else{
+  //         sfx.menuErrorSource.playOnce()
+  //       }
+        
+  //     },
+  //     {
+  //       button: ActionButton.POINTER,
+  //       hoverText: "Refresh"
+  //     }
+  //   )
+  // )
+ 
+  // refreshButton.setParent(refreshRoot) 
+
+  return collectionsMenu
+}
+
+
+export async function updateCollectionsMenu(_menu:VerticalScrollMenu, _wearableMenuRef:HorizontalScrollMenu, _count:number, _addLoadMoreButton:boolean){
 
   const { mana, store } = await createComponents();
   const storeContract = getContract(ContractName.CollectionStore, 80001);
@@ -142,95 +224,32 @@ export async function updateWearablesMenu(_menu:HorizontalScrollMenu, _count:num
   log("number of Collections: " + collections.length)
   
   for (const collection of collections) {   
-    log("number of items in collection: " + collection.items.length) 
+    log("number of items in collection: " + collection.items.length)        
 
-    
-    for (const item of collection.items) {
-      
-      if (+item.available > 0) {
-
-        log("adding: " + item.metadata.wearable.name) 
+        log("adding: " + collection.name) 
         if(itemCount < _menu.items.length){
-          _menu.items[itemCount].updateItemInfo(collection, item)
+          _menu.items[itemCount].updateItemInfo(collection)
         }
         else{
-          _menu.addMenuItem(new WearableMenuItem({    
+          _menu.addMenuItem(new CollectionMenuItem({    
               scale: new Vector3(1,1,1)
             },        
-            new Texture("images/rounded_alpha.png"),
+            resource.roundedSquareAlpha,
             collection,
-            item
+            _wearableMenuRef
           ))
         }    
         itemCount++        
-      }
+      
     }
-  }
-
-  if(itemCount <= _menu.items.length){
-    removeLastXItems(_menu, _menu.items.length - itemCount)
-  } 
-
-   //let events = await getEvents(_count)
-
-  // if (events.length <= 0) {
-  //   return
-  // } 
-
-  // // remove loadmore item
-  // if(!_addLoadMoreButton){
-  //   removeLastXItems(_menu, 1)
-  // }
- 
-
-  // for(let i=0; i < events.length; i++){
-
-  //   if (i < _menu.items.length){
-  //     _menu.items[i].updateItemInfo(events[i])
-  //   }
-  //   else{
-  //     _menu.addMenuItem(new EventMenuItem({    
-  //         scale: new Vector3(2,2,2)
-  //       },        
-  //       new Texture("images/rounded_alpha.png"),
-  //       events[i]
-  //     ))
-  //   }    
-  // }
-    
-
-  // if(events.length <= _menu.items.length){
-  //   removeLastXItems(_menu, _menu.items.length - events.length)
-  // } 
-
-  // if(_addLoadMoreButton){
-  //   let loadButton = new loadMoreMenuItem({    
-  //     scale: new Vector3(1,1,1)
-  //     },
-  //     _menu
-  //     )
-    
-  //   loadButton.addComponent(
-  //     new OnPointerDown(
-  //       async function () { 
-  //         loadButton.getComponent(Transform).position.z = 0
-  //         updateWearablesMenu(_menu, 30, false)
-  //       },
-  //       {
-  //         button: ActionButton.POINTER,
-  //         hoverText: "LOAD MORE"
-  //       }
-  //     )
-  //   )
-
-  //   _menu.addMenuItem(loadButton)
-  // }
- 
   
 
-
-
-  // _menu.resetScroll()
+  if(itemCount <= _menu.items.length){
+  // _menu.removeLastXItems(_menu.items.length - itemCount)
+  } 
+  updateWearablesMenu(_wearableMenuRef, collections[0])
+  _menu.resetScroll()
+  
 }
 
 export async function fillWearablesMenu(_menu:HorizontalScrollMenu) {
@@ -259,6 +278,5 @@ export function removeLastXItems(_menu:HorizontalScrollMenu, x:number){
     for(let i = 0; i < x; i++){
       _menu.removeMenuItem(_menu.items.length - 1)
     }
-  }
-  
+  }  
 }

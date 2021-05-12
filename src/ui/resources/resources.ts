@@ -7,6 +7,10 @@ export let dummySceneBG = new Texture ("images/dummy_scene.png")
 
 //MENU
 export let wardrobeShape =          new GLTFShape(modelFolder + "wardrobe.glb")
+export let smallCardShape =         new GLTFShape(modelFolder + "small_card.glb")
+export let smallCardHighlightShape =new GLTFShape(modelFolder + "collection_highlight.glb")
+export let cardClickableShape =     new GLTFShape(modelFolder + "card_clickable.glb")
+export let collectionMenuShape =    new GLTFShape(modelFolder + "collection_menu_bg.glb")
 export let menuPillarsShape =       new GLTFShape(modelFolder + "menu_pillars.glb")
 export let menuBaseShape =          new GLTFShape(modelFolder + "menu_base.glb")
 export let menuTopEventsShape =     new GLTFShape(modelFolder + "menu_top_events.glb")

@@ -1,7 +1,24 @@
 //dummy EventMenuItem JSON
 export let collectionPlaceholder = 
     {
-        id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+        name: 'Test-collection with a very long name Cybermike',
+        items:[
+            {
+                available: "1",
+                blockchainId: "0",
+                image: "images/dummy_scene.png",
+                maxSupply: "1000",
+                metadata:{
+                    wearable:{
+                        name: "Test Wearable"
+                    }
+                },
+                price: "1000000000000000000",
+                rarity: "-",
+                urn: "urn:decentraland:mumbai:collections-v2:xxxxxxxx:0"
+            }
+    ]
+    
         
     }
 
