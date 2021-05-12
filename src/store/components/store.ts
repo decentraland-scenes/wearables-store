@@ -35,5 +35,25 @@ export function createStoreComponent({
         log(e);
       });
   }
-  return { buy };
+  async function buyMultipleItems(collectionId: string, items: { blockchainId: string; price: string }[]) {
+    const { contract, storeConfig } = await getContract();
+    const bIds: Array<string> = [];
+    const prices: Array<string> = [];
+    for (const item of items) {
+      bIds.push(item.blockchainId);
+      prices.push(item.price);
+    }
+    const functionSignature = contract.buy.toPayload([[collectionId, bIds, prices, [fromAddress]]]);
+    log(functionSignature);
+
+    dclTx
+      .sendMetaTransaction(requestManager as any, metaRequestManager as any, functionSignature.data, storeConfig)
+      .then((tx) => {
+        log(tx);
+      })
+      .catch((e) => {
+        log(e);
+      });
+  }
+  return { buy, buyMultipleItems};
 }
