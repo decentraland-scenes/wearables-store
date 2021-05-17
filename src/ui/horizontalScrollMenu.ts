@@ -3,6 +3,7 @@ import { AnimatedItem } from "./simpleAnimator"
 import * as resource from "./resources/resources"
 import * as sfx from "./resources/sounds"
 import { MenuItem } from "./menuItem"
+import { wordWrap } from "./helperFunctions"
 
 
 
@@ -64,8 +65,9 @@ export class HorizontalScrollMenu extends Entity {
     clickBoxes:Entity[]
     itemRoots:Entity[]
     instructions:Entity
-    baseText:Entity
-    baseTextShape:TextShape
+    topText:Entity
+    topTextShape:TextShape
+    
 
     
     selectSound:Entity
@@ -138,21 +140,21 @@ export class HorizontalScrollMenu extends Entity {
         this.baseMesh.setParent(this)
         this.baseMesh.addComponent(sfx.menuDownSource)
 
-        this.baseText = new Entity
-        this.baseTextShape = new TextShape()
-        this.baseTextShape.value = _baseTitle
-        this.baseTextShape.color = Color3.FromHexString("#111111")
-        this.baseTextShape.font = new Font(Fonts.SanFrancisco_Heavy)
-        this.baseTextShape.fontSize = 3
+        this.topText = new Entity
+        this.topTextShape = new TextShape()
+        this.topTextShape.value = _baseTitle
+        this.topTextShape.color = Color3.FromHexString("#000000")
+        this.topTextShape.font = new Font(Fonts.SanFrancisco_Heavy)
+        this.topTextShape.fontSize = 3
 
-        this.baseText.addComponent(this.baseTextShape)
-        this.baseText.addComponent(new Transform({
-            position: new Vector3(0,-0.15,-0.16),
-            scale: new Vector3(0.25, 0.25, 0.25),
-            rotation: Quaternion.Euler(27,0,0)
+        this.topText.addComponent(this.topTextShape)
+        this.topText.addComponent(new Transform({
+            position: new Vector3(0,2.85,-0.2),
+            scale: new Vector3(0.4, 0.4, 0.4),
+            rotation: Quaternion.Euler(0,0,0)
         }))
         
-        this.baseText.setParent(this.baseMesh)
+        this.topText.setParent(this.baseMesh)
 
         this.origin = new Vector3(0,0,0)
         this.origin.copyFrom(this.getComponent(Transform).position)
@@ -321,7 +323,7 @@ export class HorizontalScrollMenu extends Entity {
             this.fullSizeItem(scrollInfo.currentItem + this.visibleItemCount -2)
 
             this.halveSizeAllExcept(scrollInfo.currentItem)
-            
+            //this.rotateAll(scrollInfo.currentItem)
             sfx.menuUpSource.playOnce()
         }
         //reached the end
@@ -351,7 +353,7 @@ export class HorizontalScrollMenu extends Entity {
             this.fullSizeItem(scrollInfo.currentItem )
 
             this.halveSizeAllExcept(scrollInfo.currentItem)
-
+            //this.rotateAll(scrollInfo.currentItem)
 
             sfx.menuDownSource.playOnce()
         }
@@ -359,6 +361,23 @@ export class HorizontalScrollMenu extends Entity {
         else{
             this.scrollerRootA.getComponent(Transform).position.x += 0.3
             sfx.menuScrollEndSource.playOnce()
+        }
+
+    }
+    
+    rotateAll(currentItem:number){
+        for( let i=0; i < this.items.length; i++){
+            
+            if (i < currentItem){
+                this.items[i].getComponent(AnimatedItem).defaultTransform.rotation = Quaternion.Euler(0,-45,0)
+            }
+            if(i == currentItem){
+                this.items[i].getComponent(AnimatedItem).defaultTransform.rotation = Quaternion.Euler(0,0,0)
+            }
+            if (i > currentItem){
+                this.items[i].getComponent(AnimatedItem).defaultTransform.rotation = Quaternion.Euler(0,45,0)
+            }
+            
         }
 
     }
@@ -400,7 +419,7 @@ export class HorizontalScrollMenu extends Entity {
         }
     }
     hideItem(_id:number){
-        if(_id < this.items.length && _id >= 0){
+        if(_id < this.items.length && _id >= 0){            
             engine.removeEntity(this.itemRoots[_id])
         }
     }
@@ -422,6 +441,9 @@ export class HorizontalScrollMenu extends Entity {
                 originalTransform.scale.x = this.items[_id].defaultItemScale.x *0.5 
                 originalTransform.scale.y = this.items[_id].defaultItemScale.y *0.5  
                 originalTransform.scale.z = this.items[_id].defaultItemScale.z *0.5 
+               
+               // this.items[_id].getComponent(AnimatedItem).animFraction = 1
+               
             }
                         
         }
@@ -430,6 +452,7 @@ export class HorizontalScrollMenu extends Entity {
         
         if(_id < this.items.length && _id >= 0){            
             this.items[_id].getComponent(AnimatedItem).defaultTransform.scale.copyFrom(this.items[_id].defaultItemScale)
+            //this.items[_id].getComponent(AnimatedItem).animFraction = 1
             
         }
     }
@@ -451,6 +474,7 @@ export class HorizontalScrollMenu extends Entity {
         this.scrollerRootA.getComponent(HorizontalScroller).scrollStep =  this.spacing   
         this.scrollerRootA.getComponent(HorizontalScroller).stops = this.items.length 
 
+
         for (let i=0; i< this.items.length; i++){
             if(i < this.visibleItemCount){
                 this.showItem(i)
@@ -461,6 +485,11 @@ export class HorizontalScrollMenu extends Entity {
             // reset menu item scaling
             this.items[i].getComponent(AnimatedItem).defaultTransform.scale.copyFrom(this.items[i].defaultItemScale)
         }
+
+        this.scrollerRootA.getComponent(Transform).position.x = 0
+    }
+    updateTitle(_title:string){
+        this.topTextShape.value = wordWrap(_title,40,2)
     }
     // showFirstXItems(_count:number){
     //     // only show the first 5 events on init

@@ -88,9 +88,14 @@ for( let j=0; j< linesSeparate.length; j++){
   let croppedResult = ''
 
   for(let i=0; i < maxLines && i < finalLines.length; i++){
-    croppedResult += finalLines[i] + '\n'  
+    //croppedResult += finalLines[i] + '\n'  
+    croppedResult += finalLines[i] 
+    if(i != maxLines-1){
+      croppedResult += '\n'
+    }  
   }
-  if(finalLines.length > maxLines){
+  
+  if(finalLines.length > maxLines || croppedResult.length > maxWidth){
     croppedResult += '...'
   }
 

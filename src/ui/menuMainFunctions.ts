@@ -28,11 +28,11 @@ export function createWearablesHorizontalMenu (_transform: TranformConstructorAr
     position: new Vector3(0, 0, 0 ),
     scale: new Vector3(1,1,1)
   },
-  1.0,
+  1.1,
   _visibleItems,
   resource.menuTopEventsShape,
   resource.wardrobeShape,
-  "Events"
+  "Wearables"
   )  
   menuRoot.addComponent(new Transform({
     position: _transform.position,
@@ -63,6 +63,8 @@ export function createWearablesHorizontalMenu (_transform: TranformConstructorAr
 export function updateWearablesMenu(_menu:HorizontalScrollMenu, _collection:any){
 
     
+  _menu.updateTitle(_collection.name)
+
     for (let i= 0; i < _collection.items.length; i++) {
       
       // only show wearables wich have purchasable copies left
@@ -133,70 +135,6 @@ export function createCollectionsVerticalMenu (_transform: TranformConstructorAr
     ))
   }
 
-  // let refreshRoot = new Entity()
-  // refreshRoot.addComponent(new Transform({
-  //   position: new Vector3(2.35,-1.15,-0.65),
-  //   rotation: Quaternion.Euler(27,0,0),
-  //   scale: new Vector3(0.35, 0.35, 0.35)
-  // }))
-  // refreshRoot.addComponent(sfx.menuErrorSource)
-  // refreshRoot.setParent(collectionsMenu)
-
-  // let refreshButton = new Entity()
-  // refreshButton.addComponent(new Transform({
-  //   position: new Vector3(0,0,-0.1),
-    
-  // }))
-
-  // refreshButton.addComponent(new AnimatedItem(
-  //   {
-  //     position: new Vector3(0,0,-0.1),
-  //     scale: new Vector3(1,1,1)
-  //   },
-  //   {
-  //     position: new Vector3(0,0,0.0),
-  //     scale: new Vector3(1,1,1)
-  //   },
-  //   2
-  // ))
-
-  // refreshButton.addComponent(new CooldownActivated(
-  //   20,
-  //   "REFRESH",
-  //   "WAIT FOR COOLDOWN"
-  //   ))
-  // refreshButton.addComponent(sfx.refreshSource)
-
-  // let cooldownText = new TextShape()
-  // cooldownText.value = "20"
-  // cooldownText.fontSize = 4
-
-  // refreshButton.addComponent(cooldownText)
-
-  // refreshButton.addComponent(resource.refreshShape)
-  // refreshButton.addComponent(
-  //   new OnPointerDown(
-  //     async function () {
-  //       if(refreshButton.getComponent(CooldownActivated).active){
-  //         refreshButton.getComponent(Transform).position.z = 0
-  //         //updateCollectionsMenu(collectionsMenu, 30, false)
-  //         refreshButton.getComponent(CooldownActivated).startCooldown()
-  //         sfx.refreshSource.playOnce()
-  //       } 
-  //       else{
-  //         sfx.menuErrorSource.playOnce()
-  //       }
-        
-  //     },
-  //     {
-  //       button: ActionButton.POINTER,
-  //       hoverText: "Refresh"
-  //     }
-  //   )
-  // )
- 
-  // refreshButton.setParent(refreshRoot) 
-
   return collectionsMenu
 }
 
@@ -245,7 +183,7 @@ export async function updateCollectionsMenu(_menu:VerticalScrollMenu, _wearableM
   
 
   if(itemCount <= _menu.items.length){
-  // _menu.removeLastXItems(_menu.items.length - itemCount)
+   _menu.removeLastXItems(_menu.items.length - itemCount)
   } 
   updateWearablesMenu(_wearableMenuRef, collections[0])
   _menu.resetScroll()

@@ -390,12 +390,15 @@ export class VerticalScrollMenu extends Entity {
                 originalTransform.scale.x = this.items[_id].defaultItemScale.x *0.5 
                 originalTransform.scale.y = this.items[_id].defaultItemScale.y *0.5  
                 originalTransform.scale.z = this.items[_id].defaultItemScale.z *0.5 
+                this.items[_id].getComponent(AnimatedItem).animFraction = 1
             }
             else{
                 const originalTransform = this.items[_id].getComponent(AnimatedItem).highlightTransform
                 originalTransform.scale.x = this.items[_id].highlightItemScale.x *0.5 
                 originalTransform.scale.y = this.items[_id].highlightItemScale.y *0.5  
                 originalTransform.scale.z = this.items[_id].highlightItemScale.z *0.5 
+                this.items[_id].getComponent(AnimatedItem).animFraction = 0
+                
             }
                         
         }
@@ -403,10 +406,15 @@ export class VerticalScrollMenu extends Entity {
     fullSizeItem(_id:number){
         
         if(_id < this.items.length && _id >= 0){       
-            
                 this.items[_id].getComponent(AnimatedItem).defaultTransform.scale.copyFrom(this.items[_id].defaultItemScale)
                 this.items[_id].getComponent(AnimatedItem).highlightTransform.scale.copyFrom(this.items[_id].highlightItemScale)
-            
+
+            if(!this.items[_id].selected){                
+                this.items[_id].getComponent(AnimatedItem).animFraction = 1
+            }
+            else{
+                this.items[_id].getComponent(AnimatedItem).animFraction = 0
+            }
             
         }
     }

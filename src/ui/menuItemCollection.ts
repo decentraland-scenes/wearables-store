@@ -24,8 +24,7 @@ export class CollectionMenuItem extends MenuItem {
     itemRoot:Entity
     cardOffset:Vector3
     title:Entity
-    titleText:TextShape    
-    highlightRays:Entity
+    titleText:TextShape     
     highlightFrame:Entity    
     
 
@@ -53,11 +52,13 @@ export class CollectionMenuItem extends MenuItem {
         this.addComponent(new AnimatedItem(
             {
                 position: new Vector3(0,0,0),
-                scale: new Vector3(this.defaultItemScale.x, this.defaultItemScale.y, this.defaultItemScale.z)
+                scale: new Vector3(this.defaultItemScale.x, this.defaultItemScale.y, this.defaultItemScale.z),
+                rotation: Quaternion.Euler(0,0,0)
             },
             {
                 position: new Vector3(0,0.0,-0.05),
-                scale:  new Vector3(this.highlightItemScale.x , this.highlightItemScale.y , this.highlightItemScale.z )
+                scale:  new Vector3(this.highlightItemScale.x , this.highlightItemScale.y , this.highlightItemScale.z ),
+                rotation: Quaternion.Euler(0,0,0)
             },
             2            
         ))
@@ -100,39 +101,22 @@ export class CollectionMenuItem extends MenuItem {
         this.title.addComponent(this.titleText)
         this.titleText.value = rawText
 
-        this.title.setParent(this.itemRoot)      
+        this.title.setParent(this.itemRoot)     
 
-        
-        
-        // // highlights BG on selection
-        // this.highlightRays = new Entity()
-        // this.highlightRays.addComponent(new Transform())
-        // this.highlightRays.addComponent(resource.highlightRaysShape)
-        // this.highlightRays.setParent(this)
-        // this.highlightRays.addComponent(new AnimatedItem(
-        //     {
-        //         position:  new Vector3(this.cardOffset.x, this.cardOffset.y, this.cardOffset.z + 0.05),
-        //         scale: new Vector3(0,0,0)
-        //     },
-        //     {
-        //         position:  new Vector3(this.cardOffset.x, this.cardOffset.y, this.cardOffset.z + 0.05) ,
-        //         scale: new Vector3(1,1,1)
-
-        //     },
-        //     3
-        // ))
-
+        //highlight on click
         this.highlightFrame = new Entity()
         this.highlightFrame.addComponent(new Transform())
         this.highlightFrame.addComponent(resource.smallCardHighlightShape)
         this.highlightFrame.addComponent(new AnimatedItem(
                 {
                     position:  new Vector3(0,0,0),
-                    scale: new Vector3(0,0,0)
+                    scale: new Vector3(0,0,0),
+                    rotation: Quaternion.Euler(0,0,0)
                 },
                 {
                     position:  new Vector3(0,0,0) ,
-                    scale: new Vector3(1,1,1)
+                    scale: new Vector3(1,1,1),
+                    rotation: Quaternion.Euler(0,0,0)
     
                 },
                 3
@@ -163,12 +147,10 @@ export class CollectionMenuItem extends MenuItem {
          
 
         if(!this.selected){
-           // engine.addEntity(this.detailsRoot)
-            this.selected = true 
-            log("clicked wearableMenu: " + this.wearableMenuReference)
-            log("clicked collection: " + this.collection.items)
-            updateWearablesMenu(this.wearableMenuReference, this.collection )            
-            //this.detailTextPanel.getComponent(AnimatedItem).isHighlighted = true       
+           
+            this.selected = true             
+            updateWearablesMenu(this.wearableMenuReference, this.collection ) 
+                 
             this.highlightFrame.getComponent(AnimatedItem).isHighlighted = true       
             this.titleText.color = Color3.White()       
            
@@ -179,12 +161,9 @@ export class CollectionMenuItem extends MenuItem {
         if(this.selected){
             this.selected = false           
         }            
-        //this.detailTextPanel.getComponent(AnimatedItem).isHighlighted = false   
+         
         this.highlightFrame.getComponent(AnimatedItem).isHighlighted = false 
-        this.titleText.color = Color3.Black()              
-       
-          
-        
+        this.titleText.color = Color3.Black() 
         
     }
     show(){

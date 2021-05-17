@@ -9,8 +9,9 @@ import { createCollectionsVerticalMenu, createWearablesHorizontalMenu, updateCol
 import { fixImageUrl } from "./ui/helperFunctions";
 import { collectionPlaceholder } from "./ui/menuPlaceholders";
 
+
 const center = new Vector3(8,0,8)
-const collectionMenuOffset = new Vector3(-1.6, 2.05, -0.5)
+const collectionMenuOffset = new Vector3(1.6, 2.05, -0.5)
 // Horizontal MENUS
 let rotation = Quaternion.Euler(0,45,0)
 let posVec = center.add(Vector3.Forward().rotate(rotation).multiplyByFloats(0,0,0))
@@ -36,63 +37,58 @@ let collectionsMenu = createCollectionsVerticalMenu({
 updateCollectionsMenu(collectionsMenu, wearablesMenu, 10, true)
 
 
-//updateWearablesMenu(wearablesMenu, 10, true)
 
 
- 
+// function spawnCube(x: number, y: number, z: number, collection: any, item: any) {
+//   const cube = new Entity();
+//   cube.addComponent(
+//     new Transform({
+//       position: new Vector3(x, y, z),
+//       scale: new Vector3(2, 3, 0.1),
+//     })
+//   );
+//   cube.addComponent(new BoxShape());
+//   cube.addComponent(
+//     new OnClick(async () => {
+//       buy(collection.id, collection.items[0].blockchainId, collection.items[0].price);
+//     })
+//   );
+//   engine.addEntity(cube);
 
+//   const text = new Entity();
+//   text.setParent(cube);
+//   text.addComponent(
+//     new TextShape(
+//       `Collection:\n${collection.name}\n\nItem:\n${item.metadata.wearable.name}\nPrice: ${eth.fromWei(
+//         item.price,
+//         "ether"
+//       )} MANA\nRemaining: ${item.available}/${item.maxSupply}`
+//     )
+//   );
+//   text.getComponent(TextShape).fontSize = 1;
+//   text.getComponent(TextShape).hTextAlign = "left";
+//   text.getComponent(TextShape).color = Color3.Black();
+//   text.addComponent(
+//     new Transform({
+//       position: new Vector3(-0.45, 0.2, -0.9),
+//       scale: new Vector3(3 / 3, 2 / 3, 1),
+//     })
+//   );
 
-
-function spawnCube(x: number, y: number, z: number, collection: any, item: any) {
-  const cube = new Entity();
-  cube.addComponent(
-    new Transform({
-      position: new Vector3(x, y, z),
-      scale: new Vector3(2, 3, 0.1),
-    })
-  );
-  cube.addComponent(new BoxShape());
-  cube.addComponent(
-    new OnClick(async () => {
-      buy(collection.id, collection.items[0].blockchainId, collection.items[0].price);
-    })
-  );
-  engine.addEntity(cube);
-
-  const text = new Entity();
-  text.setParent(cube);
-  text.addComponent(
-    new TextShape(
-      `Collection:\n${collection.name}\n\nItem:\n${item.metadata.wearable.name}\nPrice: ${eth.fromWei(
-        item.price,
-        "ether"
-      )} MANA\nRemaining: ${item.available}/${item.maxSupply}`
-    )
-  );
-  text.getComponent(TextShape).fontSize = 1;
-  text.getComponent(TextShape).hTextAlign = "left";
-  text.getComponent(TextShape).color = Color3.Black();
-  text.addComponent(
-    new Transform({
-      position: new Vector3(-0.45, 0.2, -0.9),
-      scale: new Vector3(3 / 3, 2 / 3, 1),
-    })
-  );
-
-  const image = new Entity();
-  image.setParent(cube);
-  image.addComponent(new PlaneShape());
-  image.addComponent(new BasicMaterial());
-  image.getComponent(BasicMaterial).texture = new Texture(fixImageUrl(item.image));
-  image.addComponent(
-    new Transform({
-      position: new Vector3(0, -0.3, -0.9),
-      scale: new Vector3(3 / 4, 2 / 4, 1),
-      rotation: new Vector3(0, 0, 180).toQuaternion(),
-    })
-  );
-  return cube;
-}
+//   const image = new Entity();
+//   image.setParent(cube);
+//   image.addComponent(new PlaneShape());
+//   image.addComponent(new BasicMaterial());
+//   image.getComponent(BasicMaterial).texture = new Texture(fixImageUrl(item.image));
+//   image.addComponent(
+//     new Transform({
+//       position: new Vector3(0, -0.3, -0.9),
+//       scale: new Vector3(3 / 4, 2 / 4, 1),
+//       rotation: new Vector3(0, 0, 180).toQuaternion(),
+//     })
+//   );
+//   return cube;
+// }
 
 
 

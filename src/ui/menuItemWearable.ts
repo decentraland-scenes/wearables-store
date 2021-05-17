@@ -20,24 +20,37 @@ export class WearableMenuItem extends MenuItem {
 
     itemCard:Entity
     cardOffset:Vector3
+    cardPadding:number
+    row1Height:number
+    row2Height:number
+    row3Height:number
+    rowPriceHeight:number
+
     title:Entity
     titleText:TextShape
     collectionText:Entity
     collectionTextShape:TextShape
     priceTextRoot:Entity
     priceTextShape:TextShape
+    rarityBG:Entity
     rarityTextRoot:Entity
-    rarityTextShape:TextShape    
+    rarityTextShape:TextShape  
+    rarityLabel:Entity
+    rarityLabelText:TextShape  
     leftDetailsRoot:Entity    
     detailsRoot:Entity
+    detailsCard:Entity
     buyButton:Entity
     buyButtonText:TextShape
     buyButtonTextRoot:Entity
     availableCounter:Entity
     availableText:TextShape
+    availableLabel:Entity
+    availableLabelText:TextShape
     
     highlightRays:Entity
     highlightFrame:Entity
+
     // detailEventTitle:Entity    
     // detailTitle:TextShape
     // detailTextContent:TextShape
@@ -56,17 +69,26 @@ export class WearableMenuItem extends MenuItem {
         this.scale = new Vector3(1,0.5,1)
         this.scaleMultiplier = 1.2
         this.defaultItemScale = new Vector3(1,1,1)
-        this.cardOffset = new Vector3(0,-0.55,-0)
+        this.cardOffset = new Vector3(0,-0.5,-0)
+        this.cardPadding = 0.45    
+        this.row1Height = 0.1
+        this.row2Height = 0.25
+        this.row3Height = 0.4
+        this.rowPriceHeight = 0.58
+
+        let textColor1 = Color3.Black()
 
         //selection event animation
         this.addComponent(new AnimatedItem(
             {
                 position: new Vector3(0,0,0),
-                scale: new Vector3(this.defaultItemScale.x, this.defaultItemScale.y, this.defaultItemScale.z)
+                scale: new Vector3(this.defaultItemScale.x, this.defaultItemScale.y, this.defaultItemScale.z),
+                rotation: Quaternion.Euler(0,0,0)
             },
             {
-                position: new Vector3(0,0.3,-0.8),
-                scale:  new Vector3(this.defaultItemScale.x * this.scaleMultiplier, this.defaultItemScale.y * this.scaleMultiplier, this.defaultItemScale.z * this.scaleMultiplier)
+                position: new Vector3(0,0.3,-0.7),
+                scale:  new Vector3(this.defaultItemScale.x * this.scaleMultiplier, this.defaultItemScale.y * this.scaleMultiplier, this.defaultItemScale.z * this.scaleMultiplier),
+                rotation: Quaternion.Euler(0,0,0)
             },
             2            
         ))
@@ -78,14 +100,14 @@ export class WearableMenuItem extends MenuItem {
             scale: new Vector3(1,1,1),
             
         }))
-        this.itemCard.addComponent(resource.cardBGShape)
+       // this.itemCard.addComponent(resource.detailsCardShape)
         this.itemCard.setParent(this)
 
         
         this.thumbNail = new ThumbnailPlane(
             new Texture(fixImageUrl(_item.image)), 
             {
-                position:new Vector3(0,0.04,0),
+                position:new Vector3(0,0.0,-0.05),
                 scale: new Vector3(1,1,1)
             } ,
             _alphaTexture)   
@@ -107,6 +129,29 @@ export class WearableMenuItem extends MenuItem {
         this.detailsRoot.addComponent(new Transform())
         this.detailsRoot.setParent(this)
         
+        // -- DETAILS CARD
+        this.detailsCard = new Entity()
+        this.detailsCard.addComponent(new Transform({
+            position: new Vector3(this.cardOffset.x, this.cardOffset.y-0.2, this.cardOffset.z),            
+            scale: new Vector3(0.4, 0.4, 0.4)
+        }))
+        this.detailsCard.addComponent(resource.detailsCardShape)
+        this.detailsCard.setParent(this.detailsRoot)
+        this.detailsCard.addComponent(new AnimatedItem(
+            {
+                position: new Vector3(this.cardOffset.x, this.cardOffset.y, this.cardOffset.z + 0.05),
+                scale: new Vector3(1, 1, 1),
+                rotation: Quaternion.Euler(0,0,0)
+            },
+            {   
+                position: new Vector3(this.cardOffset.x , this.cardOffset.y-0.51, this.cardOffset.z),                
+                scale: new Vector3(1, 1, 1),
+                rotation: Quaternion.Euler(0,0,0)
+            },
+            1.5
+        ))
+        this.detailsCard.setParent(this.detailsRoot)
+
         const detailFontSize = 1
         
         // TITLE
@@ -125,22 +170,22 @@ export class WearableMenuItem extends MenuItem {
         this.titleText.resizeToFit = true
         
         this.titleText.fontSize = 2
-        this.titleText.color = Color3.Black()
+        this.titleText.color = textColor1
         this.titleText.hTextAlign = 'center'
         this.titleText.vTextAlign = 'center'        
         
         this.title.addComponent(new Transform({
-            position: new Vector3(0,-0.6, -0.01),
+            position: new Vector3(0, -this.row1Height, -0.01),
             scale: new Vector3(0.3,0.3,0.3)
         }))
         this.title.addComponent(this.titleText)
 
-        this.title.setParent(this.itemCard)      
+        this.title.setParent(this.detailsCard)      
 
         // PRICE
         this.priceTextRoot = new Entity()
         this.priceTextRoot.addComponent(new Transform({
-            position: new Vector3(0,-1.05,0)
+            position: new Vector3(0, -this.rowPriceHeight,0)
         }))
 
         this.priceTextShape = new TextShape()
@@ -150,56 +195,133 @@ export class WearableMenuItem extends MenuItem {
         this.priceTextShape.font = new Font(Fonts.SanFrancisco_Heavy)
 
         this.priceTextRoot.addComponent( this.priceTextShape)
-        this.priceTextRoot.setParent(this.itemCard)
+        this.priceTextRoot.setParent(this.detailsCard)
 
         // RARITY
         this.rarityTextRoot = new Entity()
         this.rarityTextRoot.addComponent(new Transform({
-            position: new Vector3(0,-0.75,0)
+            position: new Vector3(this.cardPadding, -this.row2Height,0)
         }))
 
         this.rarityTextShape = new TextShape()
         this.rarityTextShape.value = _item.rarity
-        this.rarityTextShape.color = Color3.Black()        
+        this.rarityTextShape.color = textColor1      
         this.rarityTextShape.fontSize = detailFontSize
         this.rarityTextShape.font = new Font(Fonts.SanFrancisco_Heavy)
+        this.rarityTextShape.hTextAlign = "right"
 
         this.rarityTextRoot.addComponent( this.rarityTextShape)
-        this.rarityTextRoot.setParent(this.itemCard)
+        this.rarityTextRoot.setParent(this.detailsCard)
+        
+        //RARITY LABEL
+        this.rarityLabelText = new TextShape
+        this.rarityLabelText.value = "Rarity:"
+        this.rarityLabelText.color = textColor1       
+        this.rarityLabelText.fontSize = 1
+        this.rarityLabelText.font = new Font(Fonts.SanFrancisco_Heavy)
+        this.rarityLabelText.hTextAlign = "left"
+
+        this.rarityLabel = new Entity()
+        this.rarityLabel.addComponent(new Transform({
+            position: new Vector3(-this.cardPadding, -this.row2Height, 0),
+            scale: new Vector3(0.65, 0.65, 0.65)
+        }))
+        this.rarityLabel.addComponent(this.rarityLabelText)
+        this.rarityLabel.setParent(this.detailsCard)
+
+        //RARITY BG
+        this.rarityBG = new Entity()
+        this.rarityBG.addComponent(new Transform())
+       // this.rarityBG.addComponent(new PlaneShape())
+        
+        switch(_item.rarity){
+            case "rare": {
+                this.rarityBG.addComponent(resource.rareBGShape)
+                this.rarityTextShape.color = resource.rareColor
+                break
+            }
+            case "epic": {
+                this.rarityBG.addComponent(resource.epicBGShape)
+                this.rarityTextShape.color = resource.epicColor
+                break
+            }
+            case "legendary": {
+                this.rarityBG.addComponent(resource.legendaryBGShape)
+                this.rarityTextShape.color = resource.legendaryColor
+                break
+            }
+            case "mythic": {
+                this.rarityBG.addComponent(resource.mythicBGShape)
+                this.rarityTextShape.color = resource.mythicColor
+                break
+            }
+            case "unique": {
+                this.rarityBG.addComponent(resource.uniqueBGShape)
+                this.rarityTextShape.color = resource.uniqueColor
+                break
+            }
+        }
+
+        
+        this.rarityBG.setParent(this.itemCard)
+       // this.rarityBG.getComponent(GLTFShape).isPointerBlocker = false
+       // this.rarityBG.getComponent(PlaneShape).visible = true
+
         
 
-        //AVAILABLE COUNT
-        
+        //AVAILABLE COUNT        
         this.availableCounter = new Entity()
         this.availableCounter.addComponent(new Transform({
-            position: new Vector3(0,-0.85,0)
+            position: new Vector3(this.cardPadding, -this.row3Height, 0),
+            scale: new Vector3(0.75, 0.75, 0.75)
         }))
 
         this.availableText = new TextShape()
         this.availableText.value = (_item.available + "/" + _item.maxSupply)
-        this.availableText.color = Color3.Black()        
+        this.availableText.color = textColor1        
         this.availableText.fontSize = detailFontSize
         this.availableText.font = new Font(Fonts.SanFrancisco_Heavy)
+        this.availableText.hTextAlign = "right"
 
         this.availableCounter.addComponent( this.availableText)
-        this.availableCounter.setParent(this.itemCard)
+        this.availableCounter.setParent(this.detailsCard)
+
+        this.availableLabelText = new TextShape
+        this.availableLabelText.value = "Available:"
+        this.availableLabelText.color = textColor1        
+        this.availableLabelText.fontSize = 1
+        this.availableLabelText.font = new Font(Fonts.SanFrancisco_Heavy)
+        this.availableLabelText.hTextAlign = "left"
+
+        this.availableLabel = new Entity()
+        this.availableLabel.addComponent(new Transform({
+            position: new Vector3(-this.cardPadding, -this.row3Height,0),
+            scale: new Vector3(0.65, 0.65, 0.65)
+        }))
+        this.availableLabel.addComponent(this.availableLabelText)
+        this.availableLabel.setParent(this.detailsCard)
+
+        
+        
 
         // -- BUY BUTTON
         this.buyButton = new Entity()
         this.buyButton.addComponent(new Transform({
             position: new Vector3(this.cardOffset.x, this.cardOffset.y-0.2, this.cardOffset.z),            
-            scale: new Vector3(0.4, 0.4, 0.4)
+            scale: new Vector3(0.1, 0.1, 0.1)
         }))
         this.buyButton.addComponent(resource.buyButtonShape)
-        this.buyButton.setParent(this.detailsRoot)
+        this.buyButton.setParent(this.detailsCard)
         this.buyButton.addComponent(new AnimatedItem(
             {
-                position: new Vector3(this.cardOffset.x, this.cardOffset.y, this.cardOffset.z + 0.2),
-                scale: new Vector3(0.1, 0.1, 0.1)
+                position: new Vector3(0, 0, 0.1),
+                scale: new Vector3(0.1, 0.1, 0.1),
+                rotation: Quaternion.Euler(0,0,0)
             },
             {   
-                position: new Vector3(this.cardOffset.x+0.55, this.cardOffset.y-0.25, this.cardOffset.z-0.05),                
-                scale: new Vector3(0.35, 0.35, 0.35)
+                position: new Vector3(0.52, 0, -0.05),                
+                scale: new Vector3(0.75, 0.75, 0.75),
+                rotation: Quaternion.Euler(0,0,0)
             },
             1.8
         ))
@@ -215,7 +337,7 @@ export class WearableMenuItem extends MenuItem {
         this.buyButtonTextRoot.addComponent(this.buyButtonText)
         this.buyButtonTextRoot.addComponent(new Transform({
             position: new Vector3(0, 0.0, -0.05),
-            scale: new Vector3(0.22, 0.22, 0.22)
+            scale: new Vector3(0.1, 0.1, 0.1)
         }))
         
         this.buyButtonTextRoot.setParent(this.buyButton)
@@ -242,14 +364,16 @@ export class WearableMenuItem extends MenuItem {
         this.highlightRays.addComponent(new AnimatedItem(
             {
                 position:  new Vector3(this.cardOffset.x, this.cardOffset.y, this.cardOffset.z + 0.05),
-                scale: new Vector3(0,0,0)
+                scale: new Vector3(0,0,0),
+                rotation: Quaternion.Euler(0,0,0)
             },
             {
                 position:  new Vector3(this.cardOffset.x, this.cardOffset.y, this.cardOffset.z + 0.05) ,
-                scale: new Vector3(1,1,1)
+                scale: new Vector3(1,1,1),
+                rotation: Quaternion.Euler(0,0,0)
 
             },
-            3
+            6
         ))
 
         this.highlightFrame = new Entity()
@@ -261,15 +385,47 @@ export class WearableMenuItem extends MenuItem {
     updateItemInfo(_collection:any, _item:any){
         
         //image
-        
-        this.thumbNail.updateImage(new Texture(fixImageUrl(_item.image)))          
+        if(_item.image == "images/dummy_scene.png"){
+            this.thumbNail.updateImage(new Texture(_item.image))
+        }        
+        else{
+            this.thumbNail.updateImage(new Texture(fixImageUrl(_item.image)))
+        }
+                  
         
         //price
         this.priceTextShape.value = ethClean(_item.price) + " MANA"
         
         //rarity
         this.rarityTextShape.value = _item.rarity
-
+        switch(_item.rarity){
+            case "rare": {
+                this.rarityBG.addComponentOrReplace(resource.rareBGShape)
+                this.rarityTextShape.color = resource.rareColor
+                break
+            }
+            case "epic": {
+                this.rarityBG.addComponentOrReplace(resource.epicBGShape)
+                this.rarityTextShape.color = resource.epicColor
+                break
+            }
+            case "legendary": {
+                this.rarityBG.addComponentOrReplace(resource.legendaryBGShape)
+                this.rarityTextShape.color = resource.legendaryColor
+                break
+            }
+            case "mythic": {
+                this.rarityBG.addComponentOrReplace(resource.mythicBGShape)
+                this.rarityTextShape.color = resource.mythicColor
+                break
+            }
+            case "unique": {
+                this.rarityBG.addComponentOrReplace(resource.uniqueBGShape)
+                this.rarityTextShape.color = resource.uniqueColor
+                break
+            }
+        }
+        
         //available
         this.availableText.value = (_item.available + "/" + _item.maxSupply)
 
@@ -286,7 +442,7 @@ export class WearableMenuItem extends MenuItem {
         let rawText:string = _item.metadata.wearable.name 
         //  remove non-UTF-8 characters
         rawText = cleanString(rawText)
-        rawText = wordWrap(rawText,36,3)
+        rawText = wordWrap(rawText,25,2)
         this.title.getComponent(TextShape).value = rawText
 
         
@@ -307,7 +463,7 @@ export class WearableMenuItem extends MenuItem {
            // engine.addEntity(this.detailsRoot)
             this.selected = true 
             this.buyButton.getComponent(AnimatedItem).isHighlighted = true  
-            //this.detailTextPanel.getComponent(AnimatedItem).isHighlighted = true       
+            this.detailsCard.getComponent(AnimatedItem).isHighlighted = true       
             this.highlightRays.getComponent(AnimatedItem).isHighlighted = true       
            
             
@@ -318,7 +474,7 @@ export class WearableMenuItem extends MenuItem {
             this.selected = false           
         }
         this.buyButton.getComponent(AnimatedItem).isHighlighted = false      
-        //this.detailTextPanel.getComponent(AnimatedItem).isHighlighted = false   
+        this.detailsCard.getComponent(AnimatedItem).isHighlighted = false   
         this.highlightRays.getComponent(AnimatedItem).isHighlighted = false              
        
           
