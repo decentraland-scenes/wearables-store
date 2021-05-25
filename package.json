@@ -16,7 +16,7 @@
   "dependencies": {
     "@dcl/ecs-scene-utils": "^1.7.0",
     "@dcl/ui-scene-utils": "^1.8.1",
-    "decentraland-transactions": "^1.6.1",
+    "decentraland-transactions": "^1.8.0",
     "eth-connect": "^6.0.0"
   },
   "bundleDependencies": [
