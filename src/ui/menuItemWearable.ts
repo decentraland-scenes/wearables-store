@@ -189,8 +189,9 @@ export class WearableMenuItem extends MenuItem {
         }))
 
         this.priceTextShape = new TextShape()
-        this.priceTextShape.value = ethClean(_item.price)  + " MANA"
-        
+        if (ethClean(_item.price) === "0") this.priceTextShape.value = "Free";
+        else this.priceTextShape.value = ethClean(_item.price) + " MANA";
+
         this.priceTextShape.fontSize = detailFontSize
         this.priceTextShape.font = new Font(Fonts.SanFrancisco_Heavy)
 
@@ -235,6 +236,16 @@ export class WearableMenuItem extends MenuItem {
        // this.rarityBG.addComponent(new PlaneShape())
         
         switch(_item.rarity){
+            case "common": {
+                this.rarityBG.addComponent(resource.rareBGShape)
+                this.rarityTextShape.color = resource.commonColor;
+                break
+            }
+            case "uncommon": {
+                this.rarityBG.addComponent(resource.rareBGShape)
+                this.rarityTextShape.color = resource.uncommonColor;
+                break
+            }
             case "rare": {
                 this.rarityBG.addComponent(resource.rareBGShape)
                 this.rarityTextShape.color = resource.rareColor
@@ -394,7 +405,8 @@ export class WearableMenuItem extends MenuItem {
                   
         
         //price
-        this.priceTextShape.value = ethClean(_item.price) + " MANA"
+        if (ethClean(_item.price) === "0") this.priceTextShape.value = "Free"
+        else this.priceTextShape.value = ethClean(_item.price) + " MANA";
         
         //rarity
         this.rarityTextShape.value = _item.rarity

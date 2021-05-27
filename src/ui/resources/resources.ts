@@ -45,11 +45,13 @@ export const dateMonthColor:Color3 = Color3.FromHexString("#ff3333")
 export const dateDayColor:Color3 = Color3.FromHexString("#000000")
 
 //RARITY COLORS
-export const rareColor:Color3 = Color3.FromHexString("#37d17a")
-export const epicColor:Color3 = Color3.FromHexString("#4f8eec")
-export const legendaryColor:Color3 = Color3.FromHexString("#923ee2")
-export const mythicColor:Color3 = Color3.FromHexString("#fe6ce2")
-export const uniqueColor:Color3 = Color3.FromHexString("#fdc648")
+export const commonColor: Color3 = Color3.FromHexString("#ABC1C1"); //Color3.FromHexString("#37d17a")
+export const uncommonColor: Color3 = Color3.FromHexString("#ED6D4F"); //Color3.FromHexString("#37d17a")
+export const rareColor: Color3 = Color3.FromHexString("#36CF75"); //Color3.FromHexString("#37d17a")
+export const epicColor: Color3 = Color3.FromHexString("#3D85E6"); //Color3.FromHexString("#4f8eec")
+export const legendaryColor: Color3 = Color3.FromHexString("#842DDA"); //Color3.FromHexString("#923ee2")
+export const mythicColor: Color3 = Color3.FromHexString("#FF63E1"); //Color3.FromHexString("#fe6ce2")
+export const uniqueColor: Color3 = Color3.FromHexString("#FFB626"); //Color3.FromHexString("#fdc648")
 
 export let dateUIBGMaterial = new Material()
 dateUIBGMaterial.albedoColor = dateBGColor
@@ -58,6 +60,24 @@ dateUIBGMaterial.transparencyMode = 2
 dateUIBGMaterial.metallic = 0
 dateUIBGMaterial.roughness = 1
 dateUIBGMaterial.specularIntensity = 0
+
+//rare material
+export let commonMat = new Material()
+commonMat.albedoColor = commonColor
+commonMat.alphaTexture = roundedSquareAlpha
+commonMat.transparencyMode = 2
+commonMat.metallic = 0
+commonMat.roughness = 1
+commonMat.specularIntensity = 0
+
+//uncommon material
+export let uncommonMat = new Material()
+uncommonMat.albedoColor = uncommonColor
+uncommonMat.alphaTexture = roundedSquareAlpha
+uncommonMat.transparencyMode = 2
+uncommonMat.metallic = 0
+uncommonMat.roughness = 1
+uncommonMat.specularIntensity = 0
 
 //rare material
 export let rareMat = new Material()

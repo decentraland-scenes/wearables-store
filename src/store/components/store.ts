@@ -22,20 +22,28 @@ export function createStoreComponent({
   }
 
   async function buy(collectionId: string, blockchainId: string, price: string) {
+    log("buy", collectionId, blockchainId, price);
+    
     const { contract, storeConfig } = await getContract();
     const functionSignature = contract.buy.toPayload([[collectionId, [blockchainId], [price], [fromAddress]]]);
     log(functionSignature);
-
-    dclTx
-      .sendMetaTransaction(requestManager as any, metaRequestManager as any, functionSignature.data, storeConfig)
-      .then((tx) => {
-        log(tx);
-      })
-      .catch((e) => {
-        log(e);
-      });
-  }
-  async function buyMultipleItems(collectionId: string, items: { blockchainId: string; price: string }[]) {
+    
+    try {
+      const result = await dclTx.sendMetaTransaction(
+        requestManager as any,
+        metaRequestManager as any,
+        functionSignature.data,
+        storeConfig
+        );
+        log(result)
+        return true
+      } catch (error) {
+        log(error);
+        return false;
+      }
+    }
+    async function buyMultipleItems(collectionId: string, items: { blockchainId: string; price: string }[]) {
+    log("buy", collectionId, JSON.stringify(items));
     const { contract, storeConfig } = await getContract();
     const bIds: Array<string> = [];
     const prices: Array<string> = [];
@@ -55,5 +63,5 @@ export function createStoreComponent({
         log(e);
       });
   }
-  return { buy, buyMultipleItems};
+  return { buy, buyMultipleItems };
 }

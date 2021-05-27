@@ -27,9 +27,8 @@ export async function createComponents() {
 }
 
 export async function buy(collectionId: string, blockchainId: string, price: string, forceApprove?: boolean) {
-  if (!+price) return;
+  //  if (!+price) return;
   const priceInEther = eth.fromWei(price, "ether");
-  log(priceInEther);
   const { mana, store } = await createComponents();
   const storeContract = dclTx.getContract(dclTx.ContractName.CollectionStore, 80001);
   const balance = await mana.balance();
@@ -38,9 +37,8 @@ export async function buy(collectionId: string, blockchainId: string, price: str
     new UI.OkPrompt("Sorry, you do not have enough MANA", undefined, undefined, true);
     return;
   }
-  log(+allowance);
 
-  if (+price > +allowance && !forceApprove) {
+  if (+price > 0 && +price > +allowance && !forceApprove) {
     new UI.OptionPrompt(
       "Approve MANA",
       "Authorize the Store contract to operate MANA on your behalf",
@@ -72,14 +70,35 @@ export async function buy(collectionId: string, blockchainId: string, price: str
     );
     return;
   }
-  new UI.OkPrompt(
-    `You are about to buy an item for ${eth.fromWei(price, "ether")} MANA`,
-    () => {
-      store.buy(collectionId, blockchainId, price);
-    },
-    undefined,
-    true
-  );
+  if (+price === 0) {
+    new UI.OkPrompt(
+      `You are about to get an item for free`,
+      async () => {
+        const res = await store.buy(collectionId, blockchainId, price);
+        log(res)
+        if(res == true) {
+          new UI.OkPrompt("Purchased succeed!\nYou will need to refresh the page to see the wearable in your backpack.")
+        }
+      },
+      undefined,
+      true
+    );
+  
+  }
+  else {
+    new UI.OkPrompt(
+      `You are about to buy an item for ${eth.fromWei(price, "ether")} MANA`,
+      async () => {
+        const res = await store.buy(collectionId, blockchainId, price);
+        log(res)
+        if(res == true) {
+          new UI.OkPrompt("Purchased succeed! \nYou will need to refresh the page to see the wearable in your backpack.", undefined, undefined, true)
+        }
+      },
+      undefined,
+      true
+    );
+  }
 
   return {
     balance: eth.fromWei(balance, "ether"),
