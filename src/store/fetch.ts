@@ -5,7 +5,7 @@ export const allCollections = async () => {
       first: 1000,
       skip: 0,
     },
-    query: `query Wearables($first: Int, $skip: Int) {\ncollections(first: $first, skip: $skip) {\nid\nname\nowner\nurn\nitems {\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
+    query: `query Wearables($first: Int, $skip: Int) {\ncollections(first: $first, skip: $skip) {\nid\nname\nisApproved\nminters\nowner\nurn\nitems {\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
   })
     .then((r) => r.json())
     .then((r) => {
@@ -17,7 +17,7 @@ export const allCollections = async () => {
     });
 };
 
-export const storeCollections = async (storeAddress: string = "0x934477ec39ce757e95f5c7dd24562c1d5f5d1cc6") => {
+export const storeCollections = async (storeAddress: string = "0x934477ec39ce757e95f5c7dd24562c1d5f5d1cc6", isApproved: boolean = true) => {
   const result = await fetchGraph({
     operationName: "Wearables",
     variables: {
@@ -25,7 +25,7 @@ export const storeCollections = async (storeAddress: string = "0x934477ec39ce757
       skip: 0,
       storeAddress: storeAddress,
     },
-    query: `query Wearables($first: Int, $skip: Int, $storeAddress: String) {\ncollections(first: $first, skip: $skip, where:{minters_contains:["${storeAddress}"]}) {\nid\nname\nowner\nurn\nitems {\nmetadata{wearable{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
+    query: `query Wearables($first: Int, $skip: Int, $storeAddress: String) {\ncollections(first: $first, skip: $skip, where:{minters_contains:["${storeAddress}"], isApproved: ${isApproved}}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nmetadata{wearable{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
   });
   const json = await result.json();
   return json.data as { collections: Collections };
@@ -39,7 +39,7 @@ export const collection = async (collectionURN: string) => {
       skip: 0,
       urn: collectionURN,
     },
-    query: `query Wearables($first: Int, $skip: Int, $urn: String) {\ncollections(first: $first, skip: $skip, where:{urn: $urn}) {\nid\nname\nowner\nurn\nitems {\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
+    query: `query Wearables($first: Int, $skip: Int, $urn: String) {\ncollections(first: $first, skip: $skip, where:{urn: $urn}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
   })
     .then((r) => r.json())
     .then((r) => {
