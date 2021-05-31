@@ -12,7 +12,7 @@ export function createStoreComponent({
   fromAddress,
 }: Providers) {
   async function getContract() {
-    const storeConfig = dclTx.getContract(dclTx.ContractName.CollectionStore, 80001);
+    const storeConfig = dclTx.getContract(dclTx.ContractName.CollectionStore, 137);
     let contract: any = await new eth.ContractFactory(metaRequestManager, storeConfig.abi).at(storeConfig.address);
 
     return {

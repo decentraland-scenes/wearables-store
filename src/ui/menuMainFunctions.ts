@@ -142,7 +142,7 @@ export function createCollectionsVerticalMenu (_transform: TranformConstructorAr
 export async function updateCollectionsMenu(_menu:VerticalScrollMenu, _wearableMenuRef:HorizontalScrollMenu, _count:number, _addLoadMoreButton:boolean){
 
   const { mana, store } = await createComponents();
-  const storeContract = getContract(ContractName.CollectionStore, 80001);
+  const storeContract = getContract(ContractName.CollectionStore, 137);
   
   //log("MANA: " + eth.fromWei(await mana.balance(), "ether"))
 

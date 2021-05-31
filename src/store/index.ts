@@ -30,7 +30,7 @@ export async function buy(collectionId: string, blockchainId: string, price: str
   //  if (!+price) return;
   const priceInEther = eth.fromWei(price, "ether");
   const { mana, store } = await createComponents();
-  const storeContract = dclTx.getContract(dclTx.ContractName.CollectionStore, 80001);
+  const storeContract = dclTx.getContract(dclTx.ContractName.CollectionStore, 137);
   const balance = await mana.balance();
   const allowance = await mana.isApproved(storeContract.address);
   if (+price > +balance) {

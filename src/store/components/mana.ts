@@ -12,7 +12,7 @@ export function createMANAComponent({
   fromAddress,
 }: Providers) {
   async function getContract() {
-    const manaConfig = dclTx.getContract(dclTx.ContractName.MANAToken, 80001);
+    const manaConfig = dclTx.getContract(dclTx.ContractName.MANAToken, 137);
     let contract: any = await new eth.ContractFactory(metaRequestManager, manaConfig.abi).at(manaConfig.address);
 
     return {
