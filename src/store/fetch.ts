@@ -17,7 +17,10 @@ export const allCollections = async () => {
     });
 };
 
-export const storeCollections = async (storeAddress: string = "0x934477ec39ce757e95f5c7dd24562c1d5f5d1cc6", isApproved: boolean = true) => {
+export const storeCollections = async (
+  storeAddress: string = "0x843b56e58949e71d480ef9c4f9b0f3304ea9927c",
+  isApproved: boolean = true
+) => {
   const result = await fetchGraph({
     operationName: "Wearables",
     variables: {
@@ -72,7 +75,7 @@ export const item = async (itemURN: string) => {
 };
 
 async function fetchGraph(request: Object) {
-  return fetch("https://api.thegraph.com/subgraphs/name/decentraland/collections-matic-mumbai", {
+  return fetch("https://api.thegraph.com/subgraphs/name/decentraland/collections-matic-mainnet", {
     method: "POST",
     body: JSON.stringify(request),
   });
