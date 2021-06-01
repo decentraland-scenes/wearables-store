@@ -10,7 +10,7 @@ import * as ECS from "@dcl/ecs-scene-utils";
 export async function createComponents() {
   const provider = await getProvider();
   const requestManager: any = new eth.RequestManager(provider);
-  const metaProvider: any = new eth.WebSocketProvider("wss://ws-mumbai.matic.today");
+  const metaProvider: any = new eth.WebSocketProvider("wss://rpc-mainnet.matic.quiknode.pro");
   const fromAddress = await getUserAccount();
   const metaRequestManager: any = new eth.RequestManager(metaProvider);
   const providers = {
@@ -28,11 +28,15 @@ export async function createComponents() {
 
 export async function buy(collectionId: string, blockchainId: string, price: string, forceApprove?: boolean) {
   //  if (!+price) return;
+  log(collectionId, blockchainId, price)
   const priceInEther = eth.fromWei(price, "ether");
   const { mana, store } = await createComponents();
   const storeContract = dclTx.getContract(dclTx.ContractName.CollectionStore, 137);
+  log("balance")
   const balance = await mana.balance();
+  log("allowance")
   const allowance = await mana.isApproved(storeContract.address);
+  log(balance, allowance)
   if (+price > +balance) {
     new UI.OkPrompt("Sorry, you do not have enough MANA", undefined, undefined, true);
     return;

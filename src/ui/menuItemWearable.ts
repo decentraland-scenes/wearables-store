@@ -399,8 +399,9 @@ export class WearableMenuItem extends MenuItem {
         if(_item.image == "images/dummy_scene.png"){
             this.thumbNail.updateImage(new Texture(_item.image))
         }        
-        else{
-            this.thumbNail.updateImage(new Texture(fixImageUrl(_item.image)))
+        else {
+            //this.thumbNail.updateImage(new Texture(fixImageUrl(_item.image)))
+            this.thumbNail.updateImage(new Texture(_item.image))
         }
                   
         
