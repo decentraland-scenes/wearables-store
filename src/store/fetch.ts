@@ -1,3 +1,5 @@
+import * as dclTx from "decentraland-transactions";
+
 export const allCollections = async () => {
   return fetchGraph({
     operationName: "Wearables",
@@ -18,7 +20,7 @@ export const allCollections = async () => {
 };
 
 export const storeCollections = async (
-  storeAddress: string = "0x843b56e58949e71d480ef9c4f9b0f3304ea9927c",
+  storeAddress: string = dclTx.getContract(dclTx.ContractName.CollectionStore, 137).address,
   isApproved: boolean = true
 ) => {
   const result = await fetchGraph({
