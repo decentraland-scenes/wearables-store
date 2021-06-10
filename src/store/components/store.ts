@@ -23,26 +23,27 @@ export function createStoreComponent({
 
   async function buy(collectionId: string, blockchainId: string, price: string) {
     log("buy", collectionId, blockchainId, price);
-    
+
     const { contract, storeConfig } = await getContract();
     const functionSignature = contract.buy.toPayload([[collectionId, [blockchainId], [price], [fromAddress]]]);
     log(functionSignature);
-    
+
     try {
       const result = await dclTx.sendMetaTransaction(
         requestManager as any,
         metaRequestManager as any,
         functionSignature.data,
-        storeConfig
-        );
-        log(result)
-        return true
-      } catch (error) {
-        log(error);
-        return false;
-      }
+        storeConfig,
+        { serverURL: "https://transactions-api.decentraland.org/v1" }
+      );
+      log(result);
+      return true;
+    } catch (error) {
+      log(error);
+      return false;
     }
-    async function buyMultipleItems(collectionId: string, items: { blockchainId: string; price: string }[]) {
+  }
+  async function buyMultipleItems(collectionId: string, items: { blockchainId: string; price: string }[]) {
     log("buy", collectionId, JSON.stringify(items));
     const { contract, storeConfig } = await getContract();
     const bIds: Array<string> = [];
@@ -55,7 +56,9 @@ export function createStoreComponent({
     log(functionSignature);
 
     dclTx
-      .sendMetaTransaction(requestManager as any, metaRequestManager as any, functionSignature.data, storeConfig)
+      .sendMetaTransaction(requestManager as any, metaRequestManager as any, functionSignature.data, storeConfig, {
+        serverURL: "https://transactions-api.decentraland.org/v1",
+      })
       .then((tx) => {
         log(tx);
       })

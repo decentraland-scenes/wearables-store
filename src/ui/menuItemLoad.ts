@@ -2,10 +2,6 @@ import { AnimatedItem } from "./simpleAnimator"
 import * as resource from "./resources/resources"
 import { MenuItem } from "./menuItem"
 import { lobbyCenter } from "./resources/globals"
-import {     
-    updateEventsMenu, 
-    } 
-    from './menuMainFunctions'
 import { VerticalScrollMenu } from "./verticalScrollMenu"
 
 let dummyLoadButton = new Entity()
@@ -61,7 +57,6 @@ export class loadMoreMenuItem extends MenuItem {
     select(){   
         if(!this.selected){
             this.selected = true      
-            updateEventsMenu(this.menuRef, 30, false)    
         }
 
         

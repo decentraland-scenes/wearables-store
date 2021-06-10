@@ -1,14 +1,4 @@
-import { storeCollections } from "./store/fetch";
-import { getUserAccount } from "@decentraland/EthereumController";
-import * as eth from "eth-connect";
-import { getContract, ContractName } from "decentraland-transactions";
-import { createMANAComponent } from "./store/components/mana";
-import { createComponents, buy } from "./store/index";
-import * as f from "./store/fetch";
 import { createCollectionsVerticalMenu, createWearablesHorizontalMenu, updateCollectionsMenu, updateWearablesMenu } from "./ui/menuMainFunctions";
-import { fixImageUrl } from "./ui/helperFunctions";
-import { collectionPlaceholder } from "./ui/menuPlaceholders";
-
 
 const center = new Vector3(8,0,8)
 const collectionMenuOffset = new Vector3(1.6, 2.05, -0.5)
@@ -79,7 +69,7 @@ updateCollectionsMenu(collectionsMenu, wearablesMenu, 10, true)
 //   image.setParent(cube);
 //   image.addComponent(new PlaneShape());
 //   image.addComponent(new BasicMaterial());
-//   image.getComponent(BasicMaterial).texture = new Texture(fixImageUrl(item.image));
+//   image.getComponent(BasicMaterial).texture = new Texture(item.image);
 //   image.addComponent(
 //     new Transform({
 //       position: new Vector3(0, -0.3, -0.9),

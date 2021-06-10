@@ -20,7 +20,7 @@ export const allCollections = async () => {
 };
 
 export const storeCollections = async (
-  storeAddress: string = dclTx.getContract(dclTx.ContractName.CollectionStore, 137).address,
+  storeAddress: string = dclTx.getContract(dclTx.ContractName.CollectionStore, 137).address.toLowerCase(),
   isApproved: boolean = true
 ) => {
   const result = await fetchGraph({
