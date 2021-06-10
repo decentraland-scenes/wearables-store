@@ -1,5 +1,5 @@
 import { ThumbnailPlane } from "./thumbnail"
-import { cleanString, monthToString, wordWrap, fixImageUrl, ethClean, shortenText } from "./helperFunctions"
+import { cleanString, monthToString, wordWrap, ethClean, shortenText } from "./helperFunctions"
 import { AnimatedItem } from "./simpleAnimator"
 import * as resource from "./resources/resources"
 import { MenuItem } from "./menuItem"
