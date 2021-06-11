@@ -11,9 +11,7 @@ import { WearableMenuItem } from "src/ui/menuItemWearable";
 export async function createComponents() {
   const provider = await getProvider();
   const requestManager: any = new eth.RequestManager(provider);
-  const metaProvider: any = new eth.WebSocketProvider(
-    "https://rpc-decentraland-mainnet.maticvigil.com/v1/aad675783e3f73a13efbf6e95338d6de7fd5c9b9"
-  );
+  const metaProvider: any = new eth.WebSocketProvider("wss://rpc-mainnet.matic.quiknode.pro");
   const fromAddress = await getUserAccount();
   const metaRequestManager: any = new eth.RequestManager(metaProvider);
   const providers = {
@@ -54,7 +52,7 @@ export async function buy(collectionId: string, blockchainId: string, price: str
         const loading = new UI.LoadingIcon(undefined, 0, -120);
 
         await mana.approve(storeContract.address).catch(() => {});
-        await delay(1000);
+        await delay(3000);
         custom.hide();
         loading.hide();
         buy(collectionId, blockchainId, price, item ? item : undefined);
