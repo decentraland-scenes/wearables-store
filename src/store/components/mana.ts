@@ -49,7 +49,8 @@ export function createMANAComponent({
       requestManager as any,
       metaRequestManager as any,
       functionHex.data,
-      manaConfig
+      manaConfig,
+      { serverURL: "https://transactions-api.decentraland.org/v1" }
     );
     log(txHash);
     return txHash;
