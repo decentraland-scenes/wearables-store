@@ -33,6 +33,8 @@ export let refreshShape =           new GLTFShape(modelFolder + "refresh_button.
 export let loadMoreShape =          new GLTFShape(modelFolder + "load_more_btn.glb")
 
 //RARITY BG
+export let commonBGShape =          new GLTFShape(modelFolder + "rarity_bg_common.glb")
+export let uncommonBGShape =        new GLTFShape(modelFolder + "rarity_bg_uncommon.glb")
 export let rareBGShape =            new GLTFShape(modelFolder + "rarity_bg_rare.glb")
 export let epicBGShape =            new GLTFShape(modelFolder + "rarity_bg_epic.glb")
 export let legendaryBGShape =       new GLTFShape(modelFolder + "rarity_bg_legendary.glb")
