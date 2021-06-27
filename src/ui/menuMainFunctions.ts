@@ -61,14 +61,14 @@ export function createWearablesHorizontalMenu (_transform: TranformConstructorAr
 
 
 export function updateWearablesMenu(_menu:HorizontalScrollMenu, _collection:any){
-
+  log(_collection)
     
   _menu.updateTitle(_collection.name)
 
     for (let i= 0; i < _collection.items.length; i++) {
       
       // only show wearables wich have purchasable copies left
-      if (_collection.items[i].available > 0) {
+      //if (_collection.items[i].available > 0) {
          
         // while there are still existing cards left in the menu (from previous collection) update those
         if(i < _menu.items.length){
@@ -87,7 +87,7 @@ export function updateWearablesMenu(_menu:HorizontalScrollMenu, _collection:any)
           ))
         }    
                
-      }
+      //}
     }
   
 
