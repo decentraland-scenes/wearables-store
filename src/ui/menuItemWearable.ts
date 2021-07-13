@@ -366,20 +366,28 @@ export class WearableMenuItem extends MenuItem {
     );
 
     this.buyButtonTextRoot.setParent(this.buyButton);
-
     this.buyButtonText.value = "BUY";
-    this.buyButton.addComponent(
-      new OnPointerDown(
-        async () => {
-          buy(_collection.id, _item.blockchainId, _item.price, this);
-        },
-        {
+    if (_item.available > 1) {
+      this.buyButton.addComponent(
+        new OnPointerDown(
+          async () => {
+            buy(_collection.id, _item.blockchainId, _item.price, this);
+          },
+          {
+            button: ActionButton.POINTER,
+            hoverText: "BUY WEARABLE",
+          }
+          //movePlayerTo({ x: lobbyCenter.x, y: 110, z: lobbyCenter.z-8 } )
+        )
+      );
+    } else {
+      this.buyButton.addComponent(
+        new OnPointerDown(async () => {}, {
           button: ActionButton.POINTER,
-          hoverText: "BUY WEARABLE",
-        }
-        //movePlayerTo({ x: lobbyCenter.x, y: 110, z: lobbyCenter.z-8 } )
-      )
-    );
+          hoverText: "OUT OF STOCK",
+        })
+      );
+    }
 
     // highlights BG on selection
     this.highlightRays = new Entity();
@@ -408,9 +416,9 @@ export class WearableMenuItem extends MenuItem {
     this.highlightFrame.setParent(this.highlightRays);
   }
 
-  boughtOne():void {
-      const [available, maxSupply] = this.availableText.value.split('/')
-      if(+available>0) this.availableText.value = +available-1 + "/" + maxSupply;
+  boughtOne(): void {
+    const [available, maxSupply] = this.availableText.value.split("/");
+    if (+available > 0) this.availableText.value = +available - 1 + "/" + maxSupply;
   }
 
   updateItemInfo(_collection: any, _item: any) {
@@ -423,9 +431,12 @@ export class WearableMenuItem extends MenuItem {
     }
 
     //price
-    if (ethClean(_item.price) === "0") this.priceTextShape.value = "Free";
-    else this.priceTextShape.value = ethClean(_item.price) + " MANA";
-
+    if (_item.available > 1) {
+      if (ethClean(_item.price) === "0") this.priceTextShape.value = "Free";
+      else this.priceTextShape.value = ethClean(_item.price) + " MANA";
+    } else {
+      this.priceTextShape.value = "Out of stock";
+    }
     //rarity
     this.rarityTextShape.value = _item.rarity;
     switch (_item.rarity) {
