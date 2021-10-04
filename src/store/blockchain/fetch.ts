@@ -33,27 +33,27 @@ export const storeCollections = async (
     query: `query Wearables($first: Int, $skip: Int, $storeAddress: String) {\ncollections(first: $first, skip: $skip, where:{minters_contains:["${storeAddress}"], isApproved: ${isApproved}}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nmetadata{wearable{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
   });
   const json = await result.json();
+  log(json);
   return json.data as { collections: Collections };
 };
 
 export const collection = async (collectionURN: string) => {
-  return fetchGraph({
+  const result = await fetchGraph({
     operationName: "Wearables",
     variables: {
-      first: 1000,
+      first: 1,
       skip: 0,
       urn: collectionURN,
     },
-    query: `query Wearables($first: Int, $skip: Int, $urn: String) {\ncollections(first: $first, skip: $skip, where:{urn: $urn}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
-  })
-    .then((r) => r.json())
-    .then((r) => {
-      if (r.data) {
-        return r.data;
-      } else {
-        return r;
-      }
-    });
+    query: `query Wearables($first: Int, $skip: Int, $urn: String) {\ncollections(first: $first, skip: $skip, where:{urn: $urn}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nmetadata{wearable{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
+  });
+  const json = await result.json();
+  log(json);
+  if (json.data) {
+    return json.data.collections[0];
+  } else {
+    return undefined;
+  }
 };
 
 export const item = async (itemURN: string) => {
@@ -83,7 +83,7 @@ async function fetchGraph(request: Object) {
   });
 }
 
-type Collections = {
+export type Collection = {
   id: string;
   items: {
     available: string;
@@ -98,4 +98,6 @@ type Collections = {
   name: string;
   owner: string;
   urn: string;
-}[];
+};
+
+export type Collections = Array<Collection>;

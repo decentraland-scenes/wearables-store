@@ -1,10 +1,7 @@
 
 export class ThumbnailPlane extends Entity{
     public material:Material
-    public image:Texture
-    public alphaImage:Texture
     public planeShape:PlaneShape
-    public visible:boolean
 
     constructor(_image:Texture, _transform:TransformConstructorArgs, _alphaImage?:Texture){
         super()        
@@ -37,8 +34,8 @@ export class ThumbnailPlane extends Entity{
         this.addComponent(this.material)
         this.addComponent(new Transform(
         {
-            position: new Vector3(_transform.position.x, _transform.position.y, _transform.position.z),
-            scale: new Vector3(_transform.scale.x, _transform.scale.y, _transform.scale.z),
+            position: (_transform.position?.clone()) || Vector3.Zero(),
+            scale: _transform.scale?.clone() || Vector3.One(),
         }
         ))
 

@@ -3,7 +3,7 @@ import { cleanString, monthToString, wordWrap, ethClean } from "./helperFunction
 import { AnimatedItem } from "./simpleAnimator";
 import * as resource from "./resources/resources";
 import { MenuItem } from "./menuItem";
-import { createComponents, buy } from "../store/index";
+import { createComponents, buy } from "../blockchain/index";
 import * as sfx from "./resources/sounds";
 import { lobbyCenter } from "./resources/globals";
 
