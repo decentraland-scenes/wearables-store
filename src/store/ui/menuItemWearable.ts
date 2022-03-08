@@ -170,7 +170,6 @@ export class WearableMenuItem extends MenuItem {
     this.titleText.font = new Font(Fonts.SanFrancisco_Heavy);
     this.titleText.height = 20;
     this.titleText.width = 2;
-    this.titleText.resizeToFit = true;
 
     this.titleText.fontSize = 2;
     this.titleText.color = textColor1;
@@ -441,12 +440,12 @@ export class WearableMenuItem extends MenuItem {
     this.rarityTextShape.value = _item.rarity;
     switch (_item.rarity) {
       case "common": {
-        this.rarityBG.addComponent(resource.commonBGShape);
+        this.rarityBG.addComponentOrReplace(resource.commonBGShape);
         this.rarityTextShape.color = resource.commonColor;
         break;
       }
       case "uncommon": {
-        this.rarityBG.addComponent(resource.uncommonBGShape);
+        this.rarityBG.addComponentOrReplace(resource.uncommonBGShape);
         this.rarityTextShape.color = resource.uncommonColor;
         break;
       }
