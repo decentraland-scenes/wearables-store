@@ -423,7 +423,7 @@ export class WearableMenuItem extends MenuItem {
 
   updateItemInfo(_collection: any, _item: any) {
     //image
-    if (_item.image == "images/dummy_scene.png") {
+    if (_item.image === "images/dummy_scene.png") {
       this.thumbNail.updateImage(new Texture(_item.image));
     } else {
       //this.thumbNail.updateImage(new Texture(fixImageUrl(_item.image)))

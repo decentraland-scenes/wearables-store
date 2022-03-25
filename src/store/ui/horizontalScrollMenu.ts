@@ -90,12 +90,12 @@ export class HorizontalScrollMenu extends Entity {
     // this.menuFrame.addComponent(new OnPointerDown( (e) => {
 
     //     // 'F' to scroll up
-    //     if(e.buttonId == 2){
+    //     if(e.buttonId === 2){
     //         this.scrollUp()
     //     }
 
     //     // 'E' to scroll down
-    //     if(e.buttonId == 1){
+    //     if(e.buttonId === 1){
     //         this.scrollDown()
     //     }
 
@@ -130,12 +130,12 @@ export class HorizontalScrollMenu extends Entity {
       new OnPointerDown(
         (e) => {
           // 'F' to scroll up
-          if (e.buttonId == 2) {
+          if (e.buttonId === 2) {
             this.scrollUp();
           }
 
           // 'E' to scroll down
-          if (e.buttonId == 1) {
+          if (e.buttonId === 1) {
             this.scrollDown();
           }
         },
@@ -195,12 +195,12 @@ export class HorizontalScrollMenu extends Entity {
       new OnPointerDown(
         (e) => {
           // 'F' to scroll up
-          if (e.buttonId == 2) {
+          if (e.buttonId === 2) {
             this.scrollUp();
           }
 
           // 'E' to scroll down
-          if (e.buttonId == 1) {
+          if (e.buttonId === 1) {
             this.scrollDown();
           }
         },
@@ -257,7 +257,7 @@ export class HorizontalScrollMenu extends Entity {
           const scrollInfo = this.scrollerRootA.getComponent(HorizontalScroller);
 
           // click to select
-          if (e.buttonId == 0) {
+          if (e.buttonId === 0) {
             if (!_item.selected) {
               this.selectItem(_item);
               clickBox.getComponent(OnPointerDown).hoverText = "DESELECT";
@@ -270,12 +270,12 @@ export class HorizontalScrollMenu extends Entity {
           }
 
           // 'F' to scroll up
-          if (e.buttonId == 2) {
+          if (e.buttonId === 2) {
             this.scrollUp();
           }
 
           // 'E' to scroll down
-          if (e.buttonId == 1) {
+          if (e.buttonId === 1) {
             this.scrollDown();
           }
         },
@@ -379,7 +379,7 @@ export class HorizontalScrollMenu extends Entity {
       if (i < currentItem) {
         this.items[i].getComponent(AnimatedItem).defaultTransform.rotation = Quaternion.Euler(0, -45, 0);
       }
-      if (i == currentItem) {
+      if (i === currentItem) {
         this.items[i].getComponent(AnimatedItem).defaultTransform.rotation = Quaternion.Euler(0, 0, 0);
       }
       if (i > currentItem) {
@@ -454,7 +454,7 @@ export class HorizontalScrollMenu extends Entity {
 
   halveSizeAllExcept(_id: number) {
     for (let i = 0; i < this.items.length; i++) {
-      if (i != _id) {
+      if (i !== _id) {
         this.halveSizeItem(i);
       }
     }

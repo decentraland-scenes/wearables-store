@@ -40,7 +40,7 @@ export function createMANAComponent({
 
     const functionHex = contract.approve.toPayload(
       spenderAddress,
-      amount == 0 ? "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff" : amount
+      amount === 0 ? "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff" : amount
     );
 
     log(functionHex);

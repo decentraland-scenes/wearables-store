@@ -88,7 +88,7 @@ export async function buy(collectionId: string, blockchainId: string, price: str
         custom.hide();
         loading.hide();
         log(res);
-        if (res == true) {
+        if (res === true) {
           new UI.OptionPrompt(
             "Purchased succeed!",
             "You will need to refresh the page to see the wearable in your backpack.",
@@ -127,7 +127,7 @@ export async function buy(collectionId: string, blockchainId: string, price: str
         loading.hide();
 
         log(res);
-        if (res == true) {
+        if (res === true) {
           new UI.OptionPrompt(
             "Purchased succeed!",
             "You will need to refresh the page to see the wearable in your backpack.",

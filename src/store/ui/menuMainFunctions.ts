@@ -175,7 +175,7 @@ export async function updateCollectionsMenu(
   if (collectionsList) {
     for (const collectionURN of collectionsList) {
       const collection = await f.collection(collectionURN);
-      if(collection != undefined) collections.push(collection);
+      if (collection !== undefined) collections.push(collection);
     }
   } else collections = await f.storeCollections().then((r) => r.collections);
   const fromAddress = await getUserAccount();

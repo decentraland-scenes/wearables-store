@@ -103,12 +103,12 @@ export class VerticalScrollMenu extends Entity {
       new OnPointerDown(
         (e) => {
           // 'F' to scroll up
-          if (e.buttonId == 2) {
+          if (e.buttonId === 2) {
             this.scrollUp();
           }
 
           // 'E' to scroll down
-          if (e.buttonId == 1) {
+          if (e.buttonId === 1) {
             this.scrollDown();
           }
         },
@@ -131,12 +131,12 @@ export class VerticalScrollMenu extends Entity {
       new OnPointerDown(
         (e) => {
           // 'F' to scroll up
-          if (e.buttonId == 2) {
+          if (e.buttonId === 2) {
             this.scrollUp();
           }
 
           // 'E' to scroll down
-          if (e.buttonId == 1) {
+          if (e.buttonId === 1) {
             this.scrollDown();
           }
         },
@@ -194,7 +194,7 @@ export class VerticalScrollMenu extends Entity {
           const scrollInfo = this.scrollerRootA.getComponent(VerticalScroller);
 
           // click to select
-          if (e.buttonId == 0) {
+          if (e.buttonId === 0) {
             if (!_item.selected) {
               this.selectItem(_item);
               //clickBox.getComponent(OnPointerDown).hoverText = "DESELECT"
@@ -208,12 +208,12 @@ export class VerticalScrollMenu extends Entity {
           }
 
           // 'F' to scroll up
-          if (e.buttonId == 2) {
+          if (e.buttonId === 2) {
             this.scrollUp();
           }
 
           // 'E' to scroll down
-          if (e.buttonId == 1) {
+          if (e.buttonId === 1) {
             this.scrollDown();
           }
         },

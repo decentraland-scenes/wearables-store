@@ -16,7 +16,8 @@ export const allCollections = async () => {
       } else {
         return r;
       }
-    });
+    })
+    .catch((error) => log(error));
 };
 
 export const storeCollections = async (
@@ -73,7 +74,8 @@ export const item = async (itemURN: string) => {
       } else {
         return r;
       }
-    });
+    })
+    .catch((error) => log(error));
 };
 
 async function fetchGraph(request: Object) {
