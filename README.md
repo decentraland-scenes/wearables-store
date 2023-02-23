@@ -1,3 +1,9 @@
+Flat Screen TV version of the Decentraland Wearable store
+by DOCTORdripp
+
+This 1-tier flat screen revision can be repurposed onto any flat space. Optionally replace `models/menu/wardrobe.glb` with your custom model or an empty model if you wish to position a flat store on a wall.
+
+
 # Wearables Store
 
 This store allows you to purchase wearables on the Polygon L2 layer from an in-world.

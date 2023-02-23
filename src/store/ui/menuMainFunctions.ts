@@ -24,10 +24,11 @@ export function createWearablesHorizontalMenu(
   let menuRoot = new Entity();
   let wearablesMenu = new HorizontalScrollMenu(
     {
-      position: new Vector3(0, 0, 0),
+      position: new Vector3(0, 0.6, 0),
       scale: new Vector3(1, 1, 1),
+      rotation: Quaternion.Euler(-5, 0, 0),
     },
-    1.1,
+    0.7,
     _visibleItems,
     resource.menuTopEventsShape,
     resource.wardrobeShape,
@@ -113,7 +114,7 @@ export function createCollectionsVerticalMenu(
   let menuRoot = new Entity();
   let collectionsMenu = new VerticalScrollMenu(
     {
-      position: new Vector3(0, 0, 0),
+      position: new Vector3(0, 0, 0.5),
       scale: new Vector3(1, 1, 1),
     },
     0.19,
