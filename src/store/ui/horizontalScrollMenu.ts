@@ -75,7 +75,7 @@ export class HorizontalScrollMenu extends Entity {
   ) {
     super();
 
-    const verticalOffset = 2.15;
+    const verticalOffset = 2;
     this.visibleItemCount = _numOfVisibleItems;
 
     this.items = [];
@@ -148,14 +148,14 @@ export class HorizontalScrollMenu extends Entity {
     this.topText = new Entity();
     this.topTextShape = new TextShape();
     this.topTextShape.value = _baseTitle;
-    this.topTextShape.color = Color3.FromHexString("#000000");
+    this.topTextShape.color = Color3.FromHexString("#FFFFFF");
     this.topTextShape.font = new Font(Fonts.SanFrancisco_Heavy);
     this.topTextShape.fontSize = 3;
 
     this.topText.addComponent(this.topTextShape);
     this.topText.addComponent(
       new Transform({
-        position: new Vector3(0, 2.85, -0.2),
+        position: new Vector3(0, 2.45, 0.45),
         scale: new Vector3(0.4, 0.4, 0.4),
         rotation: Quaternion.Euler(0, 0, 0),
       })
@@ -291,7 +291,7 @@ export class HorizontalScrollMenu extends Entity {
       _item.setParent(itemRoot);
     }
 
-    // _item.getComponent(Transform).position.y = this.currentOffset
+    _item.getComponent(Transform).position.y = this.currentOffset
     this.currentOffset += this.spacing;
     // this.maxHeight = this.items.length * this.verticalSpacing + 1
 
@@ -429,7 +429,7 @@ export class HorizontalScrollMenu extends Entity {
       this.items[_id].setParent(this.itemRoots[_id]);
       engine.addEntity(this.itemRoots[_id]);
       // this.items[_id].getComponent(Transform).scale.setAll(0)
-      // this.items[_id].getComponent(Transform).position.z  = 2
+       this.items[_id].getComponent(Transform).position.z  = -0.00
     }
   }
   halveSizeItem(_id: number) {
@@ -437,9 +437,9 @@ export class HorizontalScrollMenu extends Entity {
       if (this.items[_id].hasComponent(AnimatedItem)) {
         const originalTransform = this.items[_id].getComponent(AnimatedItem).defaultTransform;
         if (originalTransform.scale) {
-          originalTransform.scale.x = this.items[_id].defaultItemScale.x * 0.5;
-          originalTransform.scale.y = this.items[_id].defaultItemScale.y * 0.5;
-          originalTransform.scale.z = this.items[_id].defaultItemScale.z * 0.5;
+          originalTransform.scale.x = this.items[_id].defaultItemScale.x * 0.25;
+          originalTransform.scale.y = this.items[_id].defaultItemScale.y * 0.25;
+          originalTransform.scale.z = this.items[_id].defaultItemScale.z * 0.95;  //1.12 to hide price
         }
         // this.items[_id].getComponent(AnimatedItem).animFraction = 1
       }

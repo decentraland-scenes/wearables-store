@@ -1,8 +1,11 @@
 import { createWearableStore } from "./store/index";
 
-createWearableStore(new Transform({ position: new Vector3(8, 0, 4), rotation: Quaternion.Euler(0, 45, 0) }), [
-  "urn:decentraland:matic:collections-v2:0x0068f4b8e5d23f317151328bc0d9a82454ab29bc",
-  "urn:decentraland:matic:collections-v2:0x66194b1abcbfbedd83841775404b245c8f9e4183",
+createWearableStore(new Transform({ position: new Vector3(8, 0, 4), rotation: Quaternion.Euler(0, 90, 0) }), [
+  "urn:decentraland:matic:collections-v2:0xb5b31765f355e75b3e468dbb742aa0a87db2f425",
+  "urn:decentraland:matic:collections-v2:0x2e78cd7edcc3364724620c511355b27deaff56b3",
+  "urn:decentraland:matic:collections-v2:0x793b73e9f7c8d3df3fb16f4a23568838baf2eb0a",
+  "urn:decentraland:matic:collections-v2:0xc494f4cdcf95de946a3e36d4cee7baf9c87f08de",
+  "urn:decentraland:matic:collections-v2:0xe3d2c4ec777fb88dd219905cd896f79a592adf30",
+  "urn:decentraland:matic:collections-v2:0xfe91e9cec6e477c7275a956b6995ea0ca571abb8",
+  "urn:decentraland:matic:collections-v2:0xc717713847161131034deb6b7b907e35f2452dd1"
 ]);
-
-createWearableStore(new Transform({ position: new Vector3(4, 0, 8), rotation: Quaternion.Euler(0, 45, 0) }));

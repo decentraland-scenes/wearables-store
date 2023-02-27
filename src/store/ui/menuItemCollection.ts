@@ -88,7 +88,7 @@ export class CollectionMenuItem extends MenuItem {
     this.titleText.font = new Font(Fonts.SanFrancisco_Heavy);
     this.titleText.height = 20;
     this.titleText.width = 2;
-    this.titleText.resizeToFit = true;
+   // this.titleText.resizeToFit = true;
 
     this.titleText.fontSize = 2;
     this.titleText.color = Color3.Black();
