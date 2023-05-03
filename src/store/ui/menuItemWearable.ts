@@ -160,7 +160,9 @@ export class WearableMenuItem extends MenuItem {
     // TITLE
     this.titleText = new TextShape();
     this.title = new Entity();
-    let rawText: string = _item.metadata.wearable.name;
+    let rawText: string = ""
+    if (_item.metadata.wearable) rawText = _item.metadata.wearable.name
+    if (_item.metadata.emote) rawText = _item.metadata.emote.name
     log("item name: " + rawText);
     //  remove non-UTF-8 characters
     rawText = cleanString(rawText);
@@ -374,14 +376,14 @@ export class WearableMenuItem extends MenuItem {
           },
           {
             button: ActionButton.POINTER,
-            hoverText: "BUY WEARABLE",
+            hoverText: "BUY",
           }
           //movePlayerTo({ x: lobbyCenter.x, y: 110, z: lobbyCenter.z-8 } )
         )
       );
     } else {
       this.buyButton.addComponent(
-        new OnPointerDown(async () => {}, {
+        new OnPointerDown(async () => { }, {
           button: ActionButton.POINTER,
           hoverText: "OUT OF STOCK",
         })
@@ -488,7 +490,10 @@ export class WearableMenuItem extends MenuItem {
     this.buyButton.getComponent(OnPointerDown).button = ActionButton.POINTER;
 
     //title
-    let rawText: string = _item.metadata.wearable.name;
+    let rawText: string = "";
+    if (_item.metadata.wearable) rawText = _item.metadata.wearable
+    if (_item.metadata.emote) rawText = _item.metadata.emote
+
     //  remove non-UTF-8 characters
     rawText = cleanString(rawText);
     rawText = wordWrap(rawText, 25, 2);
@@ -518,6 +523,6 @@ export class WearableMenuItem extends MenuItem {
     this.detailsCard.getComponent(AnimatedItem).isHighlighted = false;
     this.highlightRays.getComponent(AnimatedItem).isHighlighted = false;
   }
-  show() {}
-  hide() {}
+  show() { }
+  hide() { }
 }

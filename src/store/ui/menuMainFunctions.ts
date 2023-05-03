@@ -65,7 +65,7 @@ export function createWearablesHorizontalMenu(
 }
 
 export function updateWearablesMenu(_menu: HorizontalScrollMenu, _collection: any) {
-  log(_collection);
+  log("update: Collection= ", _collection);
 
   _menu.updateTitle(_collection.name);
 
@@ -75,13 +75,11 @@ export function updateWearablesMenu(_menu: HorizontalScrollMenu, _collection: an
 
     // while there are still existing cards left in the menu (from previous collection) update those
     if (i < _menu.items.length) {
-      log("updateing card " + i + " : " + _collection.items[i].metadata.wearable.name);
-      log(_collection, _collection.items[i]);
       _menu.items[i].updateItemInfo(_collection, _collection.items[i]);
     }
     //otherwise add new cards to the menu
     else {
-      log("adding: " + _collection.items[i].metadata.wearable.name);
+      //log("adding: " + _collection.items[i].metadata.wearable.name);
       _menu.addMenuItem(
         new WearableMenuItem(
           {
@@ -178,7 +176,9 @@ export async function updateCollectionsMenu(
       const collection = await f.collection(collectionURN);
       if (collection !== undefined) collections.push(collection);
     }
-  } else collections = await f.storeCollections().then((r) => r.collections);
+  } else {
+    collections = await f.storeCollections().then((r) => r.collections);
+  }
   const fromAddress = await getUserAccount();
 
   log(collections);
