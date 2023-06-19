@@ -22,7 +22,7 @@ export const allCollections = async () => {
 
 export const storeCollections = async (
   storeAddress: string = dclTx.getContract(dclTx.ContractName.CollectionStore, 137).address.toLowerCase(),
-  isApproved: boolean = true
+  isApproved: boolean = true,
 ) => {
   const result = await fetchGraph({
     operationName: "Wearables",
@@ -31,12 +31,13 @@ export const storeCollections = async (
       skip: 0,
       storeAddress: storeAddress,
     },
-    query: `query Wearables($first: Int, $skip: Int, $storeAddress: String) {\ncollections(first: $first, skip: $skip, where:{minters_contains:["${storeAddress}"], isApproved: ${isApproved}}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nmetadata{wearable{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
+    query: `query Wearables($first: Int, $skip: Int, $storeAddress: String) {\ncollections(first: $first, skip: $skip, where:{minters_contains:["${storeAddress}"], isApproved: ${isApproved}}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nmetadata{wearable{name}emote{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
   });
   const json = await result.json();
   log(json);
   return json.data as { collections: Collections };
 };
+
 
 export const collection = async (collectionURN: string) => {
   const result = await fetchGraph({
@@ -46,7 +47,7 @@ export const collection = async (collectionURN: string) => {
       skip: 0,
       urn: collectionURN,
     },
-    query: `query Wearables($first: Int, $skip: Int, $urn: String) {\ncollections(first: $first, skip: $skip, where:{urn: $urn}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nmetadata{wearable{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
+    query: `query Wearables($first: Int, $skip: Int, $urn: String) {\ncollections(first: $first, skip: $skip, where:{urn: $urn}) {\nid\nname\nisApproved\nowner\nurn\nitems {\nmetadata{wearable{name}emote{name}}\nimage\nprice\nrarity\navailable\nmaxSupply\nblockchainId\nurn\n}\n}\n}`,
   });
   const json = await result.json();
   log(json);
@@ -95,11 +96,25 @@ export type Collection = {
     price: string;
     rarity: string;
     urn: string;
-    metadata: { wearable: { name: string } };
+    metadata: Metadata;
   }[];
   name: string;
   owner: string;
   urn: string;
 };
+
+type WearableMetadata = {
+  wearable: {
+    name: string;
+  };
+};
+
+type EmoteMetadata = {
+  emote: {
+    name: string;
+  };
+};
+
+type Metadata = WearableMetadata | EmoteMetadata;
 
 export type Collections = Array<Collection>;
